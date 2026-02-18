@@ -1,0 +1,22 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+
+@Schema({ timestamps: true })
+export class Snippet extends Document {
+  @Prop({ required: true })
+  title: string;
+
+  @Prop({ required: true })
+  code: string;
+
+  @Prop()
+  language: string;
+
+  @Prop([String])
+  tags: string[];
+
+  @Prop({ default: true })
+  isPublic: boolean;
+}
+
+export const SnippetSchema = SchemaFactory.createForClass(Snippet);
