@@ -11,7 +11,7 @@ export class SnippetsController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('language') language: string, @Query('tag') tag?: string) {
     return this.snippetsService.findAll();
   }
 }
