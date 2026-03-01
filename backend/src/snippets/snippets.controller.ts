@@ -17,7 +17,8 @@ export class SnippetsController {
   constructor(private readonly snippetsService: SnippetsService) {}
   @Post()
   create(@Body() createSnippetDto: CreateSnippetDto) {
-    return this.snippetsService.create(createSnippetDto);
+    const { userId, ...data } = createSnippetDto;
+    return this.snippetsService.create(data, userId);
   }
 
   @Get()

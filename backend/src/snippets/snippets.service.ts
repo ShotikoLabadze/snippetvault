@@ -11,8 +11,8 @@ export class SnippetsService {
     @InjectModel(Snippet.name) private snippetModel: Model<Snippet>,
   ) {}
 
-  async create(dto: CreateSnippetDto): Promise<Snippet> {
-    const create = new this.snippetModel(dto);
+  async create(dto: CreateSnippetDto, userId: string): Promise<Snippet> {
+    const create = new this.snippetModel({ ...dto, userId: userId });
     return create.save();
   }
 

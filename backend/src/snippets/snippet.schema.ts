@@ -17,6 +17,9 @@ export class Snippet extends Document {
 
   @Prop({ default: true })
   isPublic: boolean;
+
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  userId: Types.ObjectId;
 }
 
 export const SnippetSchema = SchemaFactory.createForClass(Snippet);
