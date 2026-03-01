@@ -18,7 +18,7 @@ export class SnippetsController {
   @Post()
   create(@Body() createSnippetDto: CreateSnippetDto) {
     const { userId, ...data } = createSnippetDto;
-    return this.snippetsService.create(data, userId);
+    return this.snippetsService.create(data, userId ?? 'guset_id');
   }
 
   @Get()

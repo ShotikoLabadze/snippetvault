@@ -28,4 +28,8 @@ export class CreateSnippetDto {
   @IsBoolean()
   @IsOptional()
   isPublic?: boolean;
+
+  @IsString()
+  @IsOptional()
+  userId?: string;
 }
