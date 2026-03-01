@@ -23,3 +23,5 @@ export class Snippet extends Document {
 }
 
 export const SnippetSchema = SchemaFactory.createForClass(Snippet);
+
+SnippetSchema.index({ title: 'text', code: 'text' });

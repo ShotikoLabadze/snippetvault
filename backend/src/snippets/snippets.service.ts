@@ -16,7 +16,11 @@ export class SnippetsService {
     return create.save();
   }
 
-  async findAll(language?: string, tag?: string): Promise<Snippet[]> {
+  async findAll(
+    language?: string,
+    tag?: string,
+    search?: string,
+  ): Promise<Snippet[]> {
     const query: any = {};
     if (language) {
       query.language = language;
@@ -24,6 +28,10 @@ export class SnippetsService {
 
     if (tag) {
       query.tags = { $in: [tag] };
+    }
+
+    if (search) {
+      query.$text = { $search: search };
     }
 
     return this.snippetModel.find(query).sort({ createdAt: -1 }).exec();

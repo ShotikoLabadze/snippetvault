@@ -22,8 +22,12 @@ export class SnippetsController {
   }
 
   @Get()
-  findAll(@Query('language') language: string, @Query('tag') tag?: string) {
-    return this.snippetsService.findAll();
+  findAll(
+    @Query('language') language: string,
+    @Query('tag') tag?: string,
+    @Query('search') search?: string,
+  ) {
+    return this.snippetsService.findAll(language, tag, search);
   }
 
   @Patch(':id')
