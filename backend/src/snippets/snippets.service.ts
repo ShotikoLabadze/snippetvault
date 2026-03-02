@@ -61,4 +61,14 @@ export class SnippetsService {
 
     return { deleted: true };
   }
+
+  async deleteMany(ids: string[]) {
+    const result = await this.snippetModel
+      .deleteMany({
+        _id: { $in: ids },
+      })
+      .exec();
+
+    return { deletedCount: result.deletedCount };
+  }
 }

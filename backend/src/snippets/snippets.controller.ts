@@ -11,6 +11,7 @@ import {
 import { SnippetsService } from './snippets.service';
 import { CreateSnippetDto } from './dto/create-snippet.dto';
 import { UpdateSnippetDto } from './dto/update-snippet.dto';
+import { BulkDeleteDto } from './dto/bulk-delete.dto';
 
 @Controller('snippets')
 export class SnippetsController {
@@ -39,5 +40,10 @@ export class SnippetsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.snippetsService.delete(id);
+  }
+
+  @Delete('bulk')
+  deleteMany(@Body() bulkDeleteDto: BulkDeleteDto) {
+    return this.snippetsService.deleteMany(bulkDeleteDto.ids);
   }
 }
