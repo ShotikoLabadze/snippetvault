@@ -15,15 +15,16 @@ import { UpdateSnippetDto } from './dto/update-snippet.dto';
 @Controller('snippets')
 export class SnippetsController {
   constructor(private readonly snippetsService: SnippetsService) {}
+
   @Post()
   create(@Body() createSnippetDto: CreateSnippetDto) {
     const { userId, ...data } = createSnippetDto;
-    return this.snippetsService.create(data, userId ?? 'guset_id');
+    return this.snippetsService.create(data, userId ?? 'guest_id');
   }
 
   @Get()
   findAll(
-    @Query('language') language: string,
+    @Query('language') language?: string,
     @Query('tag') tag?: string,
     @Query('search') search?: string,
   ) {
@@ -31,11 +32,11 @@ export class SnippetsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() UpdateSnippetDto: UpdateSnippetDto) {
-    return this.snippetsService.update(id, UpdateSnippetDto);
+  update(@Param('id') id: string, @Body() updateDto: UpdateSnippetDto) {
+    return this.snippetsService.update(id, updateDto);
   }
 
-  @Delete()
+  @Delete(':id')
   remove(@Param('id') id: string) {
     return this.snippetsService.delete(id);
   }
