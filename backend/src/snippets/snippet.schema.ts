@@ -1,27 +1,25 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-
 @Schema({ timestamps: true })
 export class Snippet extends Document {
   @Prop({ required: true })
-  title: string;
+  title!: string;
 
   @Prop({ required: true })
-  code: string;
+  code!: string;
 
   @Prop()
-  language: string;
+  language?: string;
 
   @Prop([String])
-  tags: string[];
+  tags!: string[];
 
   @Prop({ default: true })
-  isPublic: boolean;
+  isPublic!: boolean;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  userId: Types.ObjectId;
+  userId!: Types.ObjectId;
 }
 
 export const SnippetSchema = SchemaFactory.createForClass(Snippet);
-
 SnippetSchema.index({ title: 'text', code: 'text' });
