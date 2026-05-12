@@ -1,7 +1,6 @@
 import {
   IsArray,
   IsBoolean,
-  isNotEmpty,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -10,20 +9,20 @@ import {
 export class CreateSnippetDto {
   @IsString()
   @IsNotEmpty()
-  title: string;
+  title!: string; // დაემატა !
 
   @IsString()
   @IsNotEmpty()
-  code: string;
+  code!: string; // დაემატა !
 
   @IsString()
   @IsNotEmpty()
-  language: string;
+  language!: string; // დაემატა !
 
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  tags: string[];
+  tags?: string[]; // აქ სჯობს ? იყოს, რადგან IsOptional გიწერია
 
   @IsBoolean()
   @IsOptional()
