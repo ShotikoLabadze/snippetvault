@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import closedEye from "../assets/closedEye.png";
 import openEye from "../assets/eye.png";
@@ -111,10 +111,10 @@ const Login = () => {
           </button>
 
           <footer className="auth-footer">
-            Don't have an account?{" "}
-            <a href="/signup" title="Sign Up" className="auth-link">
+            Already have an account?{" "}
+            <Link to="/register" className="auth-link">
               Sign Up
-            </a>
+            </Link>
           </footer>
         </form>
       </div>
