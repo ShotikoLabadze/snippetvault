@@ -1,0 +1,110 @@
+.masonry-grid {
+  column-count: 1;
+  column-gap: 16px;
+  width: 100%;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .masonry-grid {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .masonry-grid {
+    column-count: 3;
+  }
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 16px;
+}
+
+.snippet-wrapper {
+  border: 1px solid gray;
+  padding: 15px;
+  border-radius: 8px;
+  background: #1a1a2e;
+  color: white;
+  box-sizing: border-box;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  margin: 0;
+}
+
+.btn-turn-card {
+  cursor: pointer;
+  padding: 5px 10px;
+  background: #333;
+  color: #00c3ff;
+  border: 1px solid #00c3ff;
+  border-radius: 5px;
+}
+
+.btn-back {
+  cursor: pointer;
+  padding: 5px 10px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.btn-navigate-page {
+  width: 100%;
+  padding: 10px;
+  background: #222;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.preview-container {
+  padding: 40px 20px;
+  text-align: center;
+  background: #0f0f1a;
+  margin: 15px 0;
+  border-radius: 8px;
+  border: 1px dashed #00c3ff;
+}
+
+.btn-explore {
+  padding: 10px 30px;
+  background: transparent;
+  color: #00c3ff;
+  border: 2px solid #00c3ff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #00c3ff;
+}
+
+.language-badge {
+  font-weight: bold;
+  color: #ffaa00;
+  font-size: 14px;
+  background: #333;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.code-display {
+  background: #000;
+  color: #0f0;
+  padding: 15px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 14px;
+  max-height: 300px;
+}

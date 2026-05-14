@@ -9,9 +9,7 @@ const Dashboard = () => {
   const fetchSnippets = async () => {
     try {
       const response = await api.get("/snippets");
-
       const snippetData = response.data.data || response.data;
-
       setSnippets(snippetData);
     } catch (err) {
       console.error("Error fetching snippets:", err);
@@ -27,15 +25,15 @@ const Dashboard = () => {
   if (loading) return <p>Loading vault...</p>;
 
   return (
-    <div>
+    <div style={{ padding: "20px" }}>
       <h1>My Snippet Vault</h1>
 
       {snippets.length === 0 ? (
         <p>Your vault is empty! We will add a form next.</p>
       ) : (
-        <ul>
+        <ul className="masonry-grid">
           {snippets.map((snippet) => (
-            <li key={snippet._id}>
+            <li key={snippet._id} className="masonry-item">
               <SnippetCard snippet={snippet} />
             </li>
           ))}
