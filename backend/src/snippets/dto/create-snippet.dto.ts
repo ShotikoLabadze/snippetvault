@@ -9,20 +9,20 @@ import {
 export class CreateSnippetDto {
   @IsString()
   @IsNotEmpty()
-  title!: string; // დაემატა !
+  title!: string;
 
   @IsString()
   @IsNotEmpty()
-  code!: string; // დაემატა !
+  code!: string;
 
   @IsString()
   @IsNotEmpty()
-  language!: string; // დაემატა !
+  language!: string;
 
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  tags?: string[]; // აქ სჯობს ? იყოს, რადგან IsOptional გიწერია
+  tags?: string[];
 
   @IsBoolean()
   @IsOptional()
@@ -31,4 +31,8 @@ export class CreateSnippetDto {
   @IsString()
   @IsOptional()
   userId?: string;
+
+  @IsString()
+  @IsOptional()
+  imageUrl?: string;
 }
