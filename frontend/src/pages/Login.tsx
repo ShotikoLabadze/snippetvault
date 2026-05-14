@@ -16,11 +16,10 @@ const Login = () => {
     try {
       const response = await api.post("/auth/login", formData);
       localStorage.setItem("token", response.data.access_token);
-      alert("Login successful!");
+
       navigate("/dashboard");
     } catch (err) {
       console.error(err);
-      alert("Invalid credentials. Check your email/password.");
     }
   };
 

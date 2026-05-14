@@ -18,11 +18,10 @@ const Register = () => {
     e.preventDefault();
     try {
       await api.post("/auth/register", formData);
-      alert("Registration successful! Now please login.");
+
       navigate("/login");
     } catch (err) {
       console.error(err);
-      alert("Error registering user. Please try again.");
     }
   };
 
