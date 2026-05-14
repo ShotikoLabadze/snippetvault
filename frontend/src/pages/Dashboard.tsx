@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import SnippetCard from "../api/components/Card/SnippetCard";
 
 const Dashboard = () => {
   const [snippets, setSnippets] = useState<any[]>([]);
@@ -35,7 +36,7 @@ const Dashboard = () => {
         <ul>
           {snippets.map((snippet) => (
             <li key={snippet._id}>
-              <strong>{snippet.title}</strong> - {snippet.language}
+              <SnippetCard snippet={snippet} />
             </li>
           ))}
         </ul>
