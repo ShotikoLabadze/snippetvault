@@ -185,7 +185,10 @@
 }
 
 .preview-container {
-  padding: 40px 20px;
+  height: 260px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   background: rgba(8, 10, 22, 0.7);
   margin: 6px 0 12px;
