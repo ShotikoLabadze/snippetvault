@@ -22,14 +22,16 @@ const Dashboard = () => {
     fetchSnippets();
   }, []);
 
-  if (loading) return <p>Loading vault...</p>;
+  if (loading)
+    return <p style={{ padding: 20, color: "#fff" }}>Loading vault...</p>;
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>My Snippet Vault</h1>
-
+    <div className="dashboard-page">
+      <h1 className="dashboard-title">My Snippet Vault</h1>
       {snippets.length === 0 ? (
-        <p>Your vault is empty! We will add a form next.</p>
+        <p style={{ color: "#cfeaff" }}>
+          Your vault is empty! We will add a form next.
+        </p>
       ) : (
         <ul className="masonry-grid">
           {snippets.map((snippet) => (

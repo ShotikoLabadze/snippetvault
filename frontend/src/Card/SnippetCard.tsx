@@ -1,10 +1,8 @@
 import Prism from "prismjs";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 import "prismjs/plugins/autoloader/prism-autoloader";
 import "prismjs/themes/prism-tomorrow.css";
-
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./SnippetCard.css";
 
 interface Snippet {
@@ -16,13 +14,7 @@ interface Snippet {
 
 const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [randomPadding, setRandomPadding] = useState("15px");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const extraPadding = Math.floor(Math.random() * 60) + 15;
-    setRandomPadding(`${extraPadding}px`);
-  }, []);
 
   useEffect(() => {
     if (Prism.plugins.autoloader) {
@@ -34,7 +26,6 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
 
   const getPrismLanguageClass = (lang: string) => {
     const cleanLang = lang?.toLowerCase().trim();
-
     switch (cleanLang) {
       case "c#":
       case "csharp":
@@ -82,18 +73,14 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
   };
 
   const langClass = getPrismLanguageClass(snippet.language);
+  const langKey = (snippet.language || "").toLowerCase().trim();
   const hasPhoto = snippet.title === "Modern Neon Button";
 
   return (
-    <div
-      className="snippet-wrapper"
-      style={{
-        paddingBottom: randomPadding,
-      }}
-    >
+    <div className="snippet-wrapper">
       {hasPhoto ? (
         !isFlipped ? (
-          <div className="flip-card-front">
+          <>
             <div className="card-header">
               <h3 className="card-title">{snippet.title}</h3>
               <button
@@ -112,11 +99,13 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
             >
               Move to Snippet Page →
             </button>
-          </div>
+          </>
         ) : (
-          <div className="flip-card-back">
+          <>
             <div className="card-header">
-              <span className="language-badge">{snippet.language}</span>
+              <span className="language-badge" data-lang={langKey}>
+                {snippet.language}
+              </span>
               <button className="btn-back" onClick={() => setIsFlipped(false)}>
                 ↻ Back
               </button>
@@ -130,13 +119,15 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
             >
               Move to Snippet Page →
             </button>
-          </div>
+          </>
         )
       ) : (
-        <div className="simple-card">
+        <>
           <div className="card-header">
             <h3 className="card-title">{snippet.title}</h3>
-            <span className="language-badge">{snippet.language}</span>
+            <span className="language-badge" data-lang={langKey}>
+              {snippet.language}
+            </span>
           </div>
           <pre className={`${langClass} code-display`}>
             <code className={langClass}>{(snippet.code || "").trim()}</code>
@@ -147,7 +138,7 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
           >
             Move to Snippet Page →
           </button>
-        </div>
+        </>
       )}
     </div>
   );
