@@ -100,11 +100,21 @@
 }
 
 .code-display {
-  background: #000;
-  color: #0f0;
-  padding: 15px;
+  padding: 15px !important;
   border-radius: 6px;
   overflow-x: auto;
   font-size: 14px;
   max-height: 300px;
+  margin: 10px 0 !important;
+
+  background: #1e1e1e !important;
+}
+
+.code-display::-webkit-scrollbar {
+  height: 6px;
+}
+
+.code-display::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
 }
