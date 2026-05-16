@@ -8,10 +8,10 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { SnippetsService } from './snippets.service';
+import { BulkDeleteDto } from './dto/bulk-delete.dto';
 import { CreateSnippetDto } from './dto/create-snippet.dto';
 import { UpdateSnippetDto } from './dto/update-snippet.dto';
-import { BulkDeleteDto } from './dto/bulk-delete.dto';
+import { SnippetsService } from './snippets.service';
 
 @Controller('snippets')
 export class SnippetsController {
@@ -30,6 +30,11 @@ export class SnippetsController {
     @Query('search') search?: string,
   ) {
     return this.snippetsService.findAll(language, tag, search);
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.snippetsService.findOne(id);
   }
 
   @Patch(':id')

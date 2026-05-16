@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Snippet } from './snippet.schema';
 import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreateSnippetDto } from './dto/create-snippet.dto';
 import { UpdateSnippetDto } from './dto/update-snippet.dto';
-import { Model } from 'mongoose';
+import { Snippet } from './snippet.schema';
 
 @Injectable()
 export class SnippetsService {
@@ -35,6 +35,16 @@ export class SnippetsService {
     }
 
     return this.snippetModel.find(query).sort({ createdAt: -1 }).exec();
+  }
+
+  async findOne(id: string) {
+    const snippet = await this.snippetModel.findById(id).exec();
+
+    if (!snippet) {
+      throw new NotFoundException(`Snippet with ID ${id} not found`);
+    }
+
+    return snippet;
   }
 
   async update(

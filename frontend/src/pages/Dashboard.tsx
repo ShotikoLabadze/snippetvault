@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
-import SnippetCard from "../Card/SnippetCard";
+import SnippetCard from "../components/Card/SnippetCard";
 
 const Dashboard = () => {
   const [snippets, setSnippets] = useState<any[]>([]);
