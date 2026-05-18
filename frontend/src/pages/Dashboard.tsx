@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import Navbar from "../components/Card/Navbar/Navbar";
 import SnippetCard from "../components/Card/SnippetCard";
 
 const Dashboard = () => {
   const [snippets, setSnippets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchSnippets = async () => {
     try {
@@ -22,19 +24,30 @@ const Dashboard = () => {
     fetchSnippets();
   }, []);
 
+  const filteredSnippets = snippets.filter(
+    (snippet) =>
+      snippet.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      snippet.language?.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
   if (loading)
     return <p style={{ padding: 20, color: "#fff" }}>Loading vault...</p>;
 
   return (
     <div className="dashboard-page">
-      <h1 className="dashboard-title">My Snippet Vault</h1>
-      {snippets.length === 0 ? (
-        <p style={{ color: "#cfeaff" }}>
-          Your vault is empty! We will add a form next.
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+
+      <h1 className="dashboard-title" style={{ padding: "20px 48px 0" }}>
+        My Snippet Vault
+      </h1>
+
+      {filteredSnippets.length === 0 ? (
+        <p style={{ color: "#cfeaff", padding: "0 48px" }}>
+          {searchQuery ? "No matching snippets found!" : "Your vault is empty!"}
         </p>
       ) : (
-        <ul className="masonry-grid">
-          {snippets.map((snippet) => (
+        <ul className="masonry-grid" style={{ padding: "20px 48px" }}>
+          {filteredSnippets.map((snippet) => (
             <li key={snippet._id} className="masonry-item">
               <SnippetCard snippet={snippet} />
             </li>
