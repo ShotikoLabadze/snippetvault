@@ -1,19 +1,26 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Snippet } from '@prisma/client';
+
+import { PrismaService } from '../../prisma.service';
 import { CreateSnippetDto } from './dto/create-snippet.dto';
 import { UpdateSnippetDto } from './dto/update-snippet.dto';
-import { Snippet } from './snippet.schema';
 
 @Injectable()
 export class SnippetsService {
-  constructor(
-    @InjectModel(Snippet.name) private snippetModel: Model<Snippet>,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateSnippetDto, userId: string): Promise<Snippet> {
-    const create = new this.snippetModel({ ...dto, userId: userId });
-    return create.save();
+    return this.prisma.snippet.create({
+      data: {
+        title: dto.title,
+        code: dto.code,
+        language: dto.language,
+        tags: dto.tags || [],
+        isPublic: dto.isPublic ?? true,
+        imageUrl: dto.imageUrl,
+        userId: userId,
+      },
+    });
   }
 
   async findAll(
@@ -21,24 +28,35 @@ export class SnippetsService {
     tag?: string,
     search?: string,
   ): Promise<Snippet[]> {
-    const query: any = {};
+    const whereClause: any = {};
+
     if (language) {
-      query.language = language;
+      whereClause.language = language;
     }
 
     if (tag) {
-      query.tags = { $in: [tag] };
+      whereClause.tags = { has: tag };
     }
 
     if (search) {
-      query.$text = { $search: search };
+      whereClause.OR = [
+        { title: { contains: search, mode: 'insensitive' } },
+        { code: { contains: search, mode: 'insensitive' } },
+      ];
     }
 
-    return this.snippetModel.find(query).sort({ createdAt: -1 }).exec();
+    return this.prisma.snippet.findMany({
+      where: whereClause,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
-  async findOne(id: string) {
-    const snippet = await this.snippetModel.findById(id).exec();
+  async findOne(id: string): Promise<Snippet> {
+    const snippet = await this.prisma.snippet.findUnique({
+      where: { id },
+    });
 
     if (!snippet) {
       throw new NotFoundException(`Snippet with ID ${id} not found`);
@@ -51,34 +69,34 @@ export class SnippetsService {
     id: string,
     updateSnippetDto: UpdateSnippetDto,
   ): Promise<Snippet> {
-    const existing = await this.snippetModel
-      .findByIdAndUpdate(id, updateSnippetDto, { new: true })
-      .exec();
-
-    if (!existing) {
+    try {
+      return await this.prisma.snippet.update({
+        where: { id },
+        data: updateSnippetDto,
+      });
+    } catch (error) {
       throw new NotFoundException(`Snippet with ID ${id} not found`);
     }
-
-    return existing;
   }
 
   async delete(id: string) {
-    const result = await this.snippetModel.findByIdAndDelete(id).exec();
-
-    if (!result) {
+    try {
+      await this.prisma.snippet.delete({
+        where: { id },
+      });
+      return { deleted: true };
+    } catch (error) {
       throw new NotFoundException(`Snippet with ID ${id} not found`);
     }
-
-    return { deleted: true };
   }
 
   async deleteMany(ids: string[]) {
-    const result = await this.snippetModel
-      .deleteMany({
-        _id: { $in: ids },
-      })
-      .exec();
+    const result = await this.prisma.snippet.deleteMany({
+      where: {
+        id: { in: ids },
+      },
+    });
 
-    return { deletedCount: result.deletedCount };
+    return { deletedCount: result.count };
   }
 }

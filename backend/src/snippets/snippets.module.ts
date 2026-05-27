@@ -1,14 +1,10 @@
 import { Module } from '@nestjs/common';
-import { SnippetsService } from './snippets.service';
+import { PrismaService } from '../../prisma.service';
 import { SnippetsController } from './snippets.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Snippet, SnippetSchema } from './snippet.schema';
+import { SnippetsService } from './snippets.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: Snippet.name, schema: SnippetSchema }]),
-  ],
-  providers: [SnippetsService],
   controllers: [SnippetsController],
+  providers: [SnippetsService, PrismaService],
 })
 export class SnippetsModule {}
