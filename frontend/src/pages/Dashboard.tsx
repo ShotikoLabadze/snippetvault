@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import CreateSnippetModal from "../components/Card/CreateModal/CreateSnippetModal";
 import Navbar from "../components/Card/Navbar/Navbar";
 import SnippetCard from "../components/Card/SnippetCard";
 
@@ -7,6 +8,7 @@ const Dashboard = () => {
   const [snippets, setSnippets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchSnippets = async () => {
     try {
@@ -35,7 +37,11 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-page">
-      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <Navbar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onNewSnippetClick={() => setIsModalOpen(true)}
+      />
 
       <h1 className="dashboard-title" style={{ padding: "20px 48px 0" }}>
         My Snippet Vault
@@ -54,6 +60,11 @@ const Dashboard = () => {
           ))}
         </ul>
       )}
+      <CreateSnippetModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSnippetCreated={fetchSnippets}
+      />
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "./SnippetCard.css";
 
 interface Snippet {
-  _id: string;
+  id: string;
   title: string;
   language: string;
   code: string;
@@ -95,7 +95,7 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
             </div>
             <button
               className="btn-navigate-page"
-              onClick={() => navigate(`/snippets/${snippet._id}`)}
+              onClick={() => navigate(`/snippets/${snippet.id}`)}
             >
               Move to Snippet Page →
             </button>
@@ -115,7 +115,7 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
             </pre>
             <button
               className="btn-navigate-page"
-              onClick={() => navigate(`/snippets/${snippet._id}`)}
+              onClick={() => navigate(`/snippets/${snippet.id}`)}
             >
               Move to Snippet Page →
             </button>
@@ -134,7 +134,7 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
           </pre>
           <button
             className="btn-navigate-page"
-            onClick={() => navigate(`/snippets/${snippet._id}`)}
+            onClick={() => navigate(`/snippets/${snippet.id}`)}
           >
             Move to Snippet Page →
           </button>

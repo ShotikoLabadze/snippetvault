@@ -6,12 +6,14 @@ interface NavbarProps {
   searchQuery?: string;
   setSearchQuery?: (value: string) => void;
   showSearchBar?: boolean;
+  onNewSnippetClick?: () => void;
 }
 
 const Navbar = ({
   searchQuery = "",
   setSearchQuery,
   showSearchBar = true,
+  onNewSnippetClick,
 }: NavbarProps) => {
   const navigate = useNavigate();
 
@@ -46,10 +48,7 @@ const Navbar = ({
           <span className="profile-text">Profile ▾</span>
         </div>
 
-        <button
-          className="btn-new-snippet"
-          onClick={() => alert("Form coming next!")}
-        >
+        <button className="btn-new-snippet" onClick={onNewSnippetClick}>
           + New Snippet
         </button>
       </div>
