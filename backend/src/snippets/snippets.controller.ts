@@ -7,7 +7,10 @@ import {
   Patch,
   Post,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { BulkDeleteDto } from './dto/bulk-delete.dto';
 import { CreateSnippetDto } from './dto/create-snippet.dto';
 import { UpdateSnippetDto } from './dto/update-snippet.dto';
@@ -17,10 +20,10 @@ import { SnippetsService } from './snippets.service';
 export class SnippetsController {
   constructor(private readonly snippetsService: SnippetsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createSnippetDto: CreateSnippetDto) {
-    const { userId, ...data } = createSnippetDto;
-    return this.snippetsService.create(data, userId ?? 'guest_id');
+  create(@Body() createSnippetDto: CreateSnippetDto, @Req() req: any) {
+    return this.snippetsService.create(createSnippetDto, req.user.id);
   }
 
   @Get()
@@ -37,16 +40,19 @@ export class SnippetsController {
     return this.snippetsService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateDto: UpdateSnippetDto) {
     return this.snippetsService.update(id, updateDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.snippetsService.delete(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('bulk')
   deleteMany(@Body() bulkDeleteDto: BulkDeleteDto) {
     return this.snippetsService.deleteMany(bulkDeleteDto.ids);
