@@ -1,5 +1,6 @@
 import { useState } from "react";
 import api from "../../../api/axios";
+import "./CreateSnippetModal.css";
 
 interface ModalProps {
   isOpen: boolean;
@@ -28,7 +29,6 @@ const CreateSnippetModal = ({
     setLoading(true);
     try {
       const tagsArray = tags ? tags.split(",").map((t) => t.trim()) : [];
-
       await api.post("/snippets", {
         title,
         language,
@@ -41,7 +41,6 @@ const CreateSnippetModal = ({
       setCode("");
       setDescription("");
       setTags("");
-
       onSnippetCreated();
       onClose();
     } catch (err) {
@@ -52,18 +51,32 @@ const CreateSnippetModal = ({
     }
   };
 
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
   return (
-    <div>
-      <div>
-        <div>
-          <h2>+ Create New Snippet</h2>
-          <button onClick={onClose}>×</button>
+    <div className="modal-overlay" onClick={handleOverlayClick}>
+      <div className="modal-content">
+        <div className="modal-header">
+          <h2 className="modal-title">
+            <span className="modal-title-plus">+</span> Create New Snippet
+          </h2>
+          <button
+            type="button"
+            className="modal-close"
+            onClick={onClose}
+            aria-label="Close"
+          >
+            ×
+          </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Title</label>
+        <form className="modal-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label">Title</label>
             <input
+              className="form-input"
               type="text"
               placeholder="e.g., Axios Auth Interceptor"
               value={title}
@@ -72,10 +85,11 @@ const CreateSnippetModal = ({
             />
           </div>
 
-          <div>
-            <div>
-              <label>Language</label>
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Language</label>
               <select
+                className="form-select"
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
               >
@@ -90,9 +104,10 @@ const CreateSnippetModal = ({
               </select>
             </div>
 
-            <div>
-              <label>Tags (comma separated)</label>
+            <div className="form-group">
+              <label className="form-label">Tags (comma separated)</label>
               <input
+                className="form-input"
                 type="text"
                 placeholder="auth, security, nestjs"
                 value={tags}
@@ -101,18 +116,20 @@ const CreateSnippetModal = ({
             </div>
           </div>
 
-          <div>
-            <label>Description</label>
+          <div className="form-group">
+            <label className="form-label">Description</label>
             <textarea
+              className="form-textarea"
               placeholder="What does this snippet do?"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
 
-          <div>
-            <label>Code</label>
+          <div className="form-group">
+            <label className="form-label">Code</label>
             <textarea
+              className="form-textarea code-input"
               placeholder="Paste your snippet code here..."
               value={code}
               onChange={(e) => setCode(e.target.value)}
@@ -120,11 +137,11 @@ const CreateSnippetModal = ({
             />
           </div>
 
-          <div>
-            <button type="button" onClick={onClose}>
+          <div className="modal-actions">
+            <button type="button" className="btn-cancel" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" disabled={loading}>
+            <button type="submit" className="btn-submit" disabled={loading}>
               {loading ? "Saving..." : "Save to Vault"}
             </button>
           </div>
