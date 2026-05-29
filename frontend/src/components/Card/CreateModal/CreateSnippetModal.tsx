@@ -14,45 +14,41 @@ const CreateSnippetModal = ({
   onSnippetCreated,
 }: ModalProps) => {
   const [title, setTitle] = useState("");
-  const [language, setLanguage] = useState("javascript");
-  const [code, setCode] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [description, setDescription] = useState("");
+  const [language, setLanguage] = useState("typescript");
+  const [code, setCode] = useState("");
   const [tags, setTags] = useState("");
   const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
 
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !code) return alert("Title and Code fields are required!");
-
     setLoading(true);
     try {
-      const tagsArray = tags ? tags.split(",").map((t) => t.trim()) : [];
       await api.post("/snippets", {
         title,
+        imageUrl,
+        description,
         language,
         code,
-        description,
-        tags: tagsArray,
+        tags: tags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean),
       });
-
-      setTitle("");
-      setCode("");
-      setDescription("");
-      setTags("");
       onSnippetCreated();
       onClose();
     } catch (err) {
-      console.error("Error creating snippet:", err);
-      alert("Failed to create snippet. Make sure you are logged in!");
+      console.error(err);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) onClose();
   };
 
   return (
@@ -60,89 +56,105 @@ const CreateSnippetModal = ({
       <div className="modal-content">
         <div className="modal-header">
           <h2 className="modal-title">
-            <span className="modal-title-plus">+</span> Create New Snippet
+            <span className="title-plus">+</span> New Snippet
           </h2>
-          <button
-            type="button"
-            className="modal-close"
-            onClick={onClose}
-            aria-label="Close"
-          >
+          <button className="modal-close" onClick={onClose} aria-label="Close">
             ×
           </button>
         </div>
 
         <form className="modal-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Title</label>
+            <label className="form-label">
+              <span className="label-icon">🛡</span> Title
+            </label>
             <input
               className="form-input"
               type="text"
-              placeholder="e.g., Axios Auth Interceptor"
+              placeholder="e.g., Modern Neon Button"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
             />
           </div>
 
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Language</label>
+          <div className="form-group">
+            <label className="form-label">
+              <span className="label-icon">🖼</span> Image URL
+            </label>
+            <input
+              className="form-input"
+              type="url"
+              placeholder="https://example.com/snippet-preview.png"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">
+              <span className="label-icon">✎</span> Description
+            </label>
+            <textarea
+              className="form-textarea"
+              placeholder="Briefly describe what this snippet does..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={3}
+            />
+          </div>
+
+          <div className="form-row code-row">
+            <div className="form-group code-group">
+              <label className="form-label">
+                <span className="label-icon">{`</>`}</span> Code
+              </label>
+              <textarea
+                className="form-textarea code-input"
+                placeholder="/* paste your code here */"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group lang-group">
+              <label className="form-label">
+                <span className="label-icon">⌘</span> Language
+              </label>
               <select
                 className="form-select"
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
               >
-                <option value="javascript">JavaScript</option>
-                <option value="typescript">TypeScript</option>
-                <option value="python">Python</option>
-                <option value="html">HTML</option>
-                <option value="css">CSS</option>
-                <option value="sql">SQL</option>
-                <option value="yaml">YAML</option>
-                <option value="bash">Bash</option>
+                <option value="typescript">typescript</option>
+                <option value="javascript">javascript</option>
+                <option value="python">python</option>
+                <option value="yaml">yaml</option>
+                <option value="html">html</option>
+                <option value="css">css</option>
               </select>
             </div>
-
-            <div className="form-group">
-              <label className="form-label">Tags (comma separated)</label>
-              <input
-                className="form-input"
-                type="text"
-                placeholder="auth, security, nestjs"
-                value={tags}
-                onChange={(e) => setTags(e.target.value)}
-              />
-            </div>
           </div>
 
           <div className="form-group">
-            <label className="form-label">Description</label>
-            <textarea
-              className="form-textarea"
-              placeholder="What does this snippet do?"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Code</label>
-            <textarea
-              className="form-textarea code-input"
-              placeholder="Paste your snippet code here..."
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              required
+            <label className="form-label">
+              <span className="label-icon">🏷</span> Tags
+            </label>
+            <input
+              className="form-input tags-input"
+              type="text"
+              placeholder="#auth, #nestjs, #docker, #neon"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
             />
           </div>
 
           <div className="modal-actions">
+            <button type="submit" className="btn-submit" disabled={loading}>
+              {loading ? "Saving..." : "Save Snippet"}
+            </button>
             <button type="button" className="btn-cancel" onClick={onClose}>
               Cancel
-            </button>
-            <button type="submit" className="btn-submit" disabled={loading}>
-              {loading ? "Saving..." : "Save to Vault"}
             </button>
           </div>
         </form>
