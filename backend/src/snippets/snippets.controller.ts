@@ -35,6 +35,14 @@ export class SnippetsController {
     return this.snippetsService.findAll(language, tag, search);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('my-snippets')
+  getMySnippets(@Req() req: any) {
+    const userId = req.user.id;
+
+    return this.snippetsService.findMySnippets(userId);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.snippetsService.findOne(id);
@@ -47,14 +55,14 @@ export class SnippetsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.snippetsService.delete(id);
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Delete('bulk')
   deleteMany(@Body() bulkDeleteDto: BulkDeleteDto) {
     return this.snippetsService.deleteMany(bulkDeleteDto.ids);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.snippetsService.delete(id);
   }
 }

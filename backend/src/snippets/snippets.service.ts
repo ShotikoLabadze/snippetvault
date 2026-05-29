@@ -99,4 +99,11 @@ export class SnippetsService {
 
     return { deletedCount: result.count };
   }
+
+  async findMySnippets(userId: string): Promise<Snippet[]> {
+    return this.prisma.snippet.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
 }
