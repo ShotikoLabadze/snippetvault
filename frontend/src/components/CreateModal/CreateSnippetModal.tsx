@@ -22,6 +22,17 @@ const CreateSnippetModal = ({
   const [tags, setTags] = useState("");
   const [loading, setLoading] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
+  const [aiCooldown, setAiCooldown] = useState(0);
+
+  useEffect(() => {
+    if (aiCooldown <= 0) return;
+
+    const timer = setInterval(() => {
+      setAiCooldown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [aiCooldown]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -53,7 +64,6 @@ const CreateSnippetModal = ({
 
     try {
       setAiLoading(true);
-
       const response = await api.post("/ai/smart-fill", { code, language });
 
       const {
@@ -69,9 +79,17 @@ const CreateSnippetModal = ({
           aiTags.map((t) => (t.startsWith("#") ? t : `#${t}`)).join(", "),
         );
       }
-    } catch (err) {
+
+      setAiCooldown(60);
+    } catch (err: any) {
       console.error("AI Smart Fill failed:", err);
-      alert("AI was unable to process the code. Please try again.");
+
+      if (err.response?.status === 429) {
+        alert("Too many requests! Please wait a moment.");
+        setAiCooldown(60);
+      } else {
+        alert("AI was unable to process the code. Please try again.");
+      }
     } finally {
       setAiLoading(false);
     }
@@ -101,7 +119,7 @@ const CreateSnippetModal = ({
     }
   };
 
-  const modal = (
+  return createPortal(
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-content" role="dialog" aria-modal="true">
         <div className="modal-header">
@@ -123,11 +141,15 @@ const CreateSnippetModal = ({
 
                 <button
                   type="button"
-                  className="btn-ai-smartfill"
+                  className={`btn-ai-smartfill ${aiCooldown > 0 ? "cooldown-active" : ""}`}
                   onClick={handleSmartFill}
-                  disabled={aiLoading}
+                  disabled={aiLoading || aiCooldown > 0}
                 >
-                  {aiLoading ? "✨ Analyzing..." : "✨ AI Smart Fill"}
+                  {aiLoading
+                    ? "✨ Analyzing..."
+                    : aiCooldown > 0
+                      ? `⏳ Wait ${aiCooldown}s`
+                      : "✨ AI Smart Fill"}
                 </button>
               </div>
               <textarea
@@ -225,10 +247,9 @@ const CreateSnippetModal = ({
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
-
-  return createPortal(modal, document.body);
 };
 
 export default CreateSnippetModal;

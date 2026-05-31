@@ -322,6 +322,22 @@
   background: rgba(0, 229, 255, 0.7);
 }
 
+.btn-ai-smartfill.cooldown-active {
+  color: #ffb703;
+  border-color: rgba(255, 183, 3, 0.4);
+  background: rgba(255, 183, 3, 0.05);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.btn-ai-smartfill.cooldown-active:hover {
+  transform: none;
+  background: rgba(255, 183, 3, 0.05);
+  color: #ffb703;
+  border-color: rgba(255, 183, 3, 0.4);
+  box-shadow: none;
+}
+
 @media (max-width: 640px) {
   .modal-content {
     padding: 22px 18px;
