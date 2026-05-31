@@ -21,6 +21,7 @@ const CreateSnippetModal = ({
   const [code, setCode] = useState("");
   const [tags, setTags] = useState("");
   const [loading, setLoading] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -44,6 +45,38 @@ const CreateSnippetModal = ({
     if (e.target === e.currentTarget) onClose();
   };
 
+  const handleSmartFill = async () => {
+    if (!code.trim()) {
+      alert("Please paste some code first!");
+      return;
+    }
+
+    try {
+      setAiLoading(true);
+
+      const response = await api.post("/ai/smart-fill", { code, language });
+
+      const {
+        title: aiTitle,
+        description: aiDescription,
+        tags: aiTags,
+      } = response.data;
+
+      if (aiTitle) setTitle(aiTitle);
+      if (aiDescription) setDescription(aiDescription);
+      if (aiTags && Array.isArray(aiTags)) {
+        setTags(
+          aiTags.map((t) => (t.startsWith("#") ? t : `#${t}`)).join(", "),
+        );
+      }
+    } catch (err) {
+      console.error("AI Smart Fill failed:", err);
+      alert("AI was unable to process the code. Please try again.");
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -56,7 +89,7 @@ const CreateSnippetModal = ({
         code,
         tags: tags
           .split(",")
-          .map((t) => t.trim())
+          .map((t) => t.trim().replace("#", ""))
           .filter(Boolean),
       });
       onSnippetCreated();
@@ -81,6 +114,50 @@ const CreateSnippetModal = ({
         </div>
 
         <form className="modal-form" onSubmit={handleSubmit}>
+          <div className="form-row code-row">
+            <div className="form-group code-group">
+              <div className="code-label-wrapper">
+                <label className="form-label">
+                  <span className="label-icon">{`</>`}</span> Code
+                </label>
+
+                <button
+                  type="button"
+                  className="btn-ai-smartfill"
+                  onClick={handleSmartFill}
+                  disabled={aiLoading}
+                >
+                  {aiLoading ? "✨ Analyzing..." : "✨ AI Smart Fill"}
+                </button>
+              </div>
+              <textarea
+                className="form-textarea code-input"
+                placeholder="/* paste your code here first, then press AI Smart Fill */"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group lang-group">
+              <label className="form-label">
+                <span className="label-icon">⌘</span> Language
+              </label>
+              <select
+                className="form-select"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+              >
+                <option value="typescript">typescript</option>
+                <option value="javascript">javascript</option>
+                <option value="python">python</option>
+                <option value="yaml">yaml</option>
+                <option value="html">html</option>
+                <option value="css">css</option>
+              </select>
+            </div>
+          </div>
+
           <div className="form-group">
             <label className="form-label">
               <span className="label-icon">🛡</span> Title
@@ -88,7 +165,7 @@ const CreateSnippetModal = ({
             <input
               className="form-input"
               type="text"
-              placeholder="e.g., Modern Neon Button"
+              placeholder="e.g., Modern Neon Button (or use AI Smart Fill)"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -121,39 +198,6 @@ const CreateSnippetModal = ({
             />
           </div>
 
-          <div className="form-row code-row">
-            <div className="form-group code-group">
-              <label className="form-label">
-                <span className="label-icon">{`</>`}</span> Code
-              </label>
-              <textarea
-                className="form-textarea code-input"
-                placeholder="/* paste your code here */"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="form-group lang-group">
-              <label className="form-label">
-                <span className="label-icon">⌘</span> Language
-              </label>
-              <select
-                className="form-select"
-                value={language}
-                onChange={(e) => setLanguage(e.target.value)}
-              >
-                <option value="typescript">typescript</option>
-                <option value="javascript">javascript</option>
-                <option value="python">python</option>
-                <option value="yaml">yaml</option>
-                <option value="html">html</option>
-                <option value="css">css</option>
-              </select>
-            </div>
-          </div>
-
           <div className="form-group">
             <label className="form-label">
               <span className="label-icon">🏷</span> Tags
@@ -161,14 +205,18 @@ const CreateSnippetModal = ({
             <input
               className="form-input tags-input"
               type="text"
-              placeholder="#auth, #nestjs, #docker, #neon"
+              placeholder="#auth, #nestjs, #docker"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
             />
           </div>
 
           <div className="modal-actions">
-            <button type="submit" className="btn-submit" disabled={loading}>
+            <button
+              type="submit"
+              className="btn-submit"
+              disabled={loading || aiLoading}
+            >
               {loading ? "Saving..." : "Save Snippet"}
             </button>
             <button type="button" className="btn-cancel" onClick={onClose}>
