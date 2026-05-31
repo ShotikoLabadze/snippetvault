@@ -7,6 +7,7 @@ import {
 import "./App.css";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
+import ProfilePage from "./pages/Profile/ProfilePage";
 import Register from "./pages/Register";
 import SnippetPage from "./pages/SnippetPage/SnippetPage";
 
@@ -18,7 +19,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/snippets/:id" element={<SnippetPage />} />
-
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>

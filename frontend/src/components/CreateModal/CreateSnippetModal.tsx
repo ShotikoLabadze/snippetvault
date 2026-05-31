@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import api from "../../../api/axios";
+import api from "../../api/axios";
 import "./CreateSnippetModal.css";
 
 interface ModalProps {
