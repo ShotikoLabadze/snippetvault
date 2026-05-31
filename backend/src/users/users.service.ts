@@ -32,6 +32,19 @@ export class UsersService {
     return userWithoutPassword as User;
   }
 
+  async findOneById(id: string): Promise<Partial<User> | null> {
+    return this.prisma.user.findUnique({
+      where: { id },
+
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        createdAt: true,
+      },
+    });
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: { email },

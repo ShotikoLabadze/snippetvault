@@ -8,10 +8,7 @@ import "./ProfilePage.css";
 interface UserProfile {
   username: string;
   email: string;
-  avatarUrl?: string;
-  joinedDate?: string;
-  totalViews?: number;
-  topTag?: string;
+  createdAt: string;
 }
 
 const ProfilePage = () => {
@@ -24,18 +21,13 @@ const ProfilePage = () => {
     try {
       setLoading(true);
 
-      const snippetsResponse = await api.get("/snippets/my-snippets");
-      setMySnippets(snippetsResponse.data);
+      const [snippetsRes, userRes] = await Promise.all([
+        api.get("/snippets/my-snippets"),
+        api.get("/users/me"),
+      ]);
 
-      setProfile({
-        username: "JohnDoe",
-        email: "john@snippetvault.com",
-        avatarUrl:
-          "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
-        joinedDate: "May 2024",
-        totalViews: 1500,
-        topTag: "#nestjs",
-      });
+      setMySnippets(snippetsRes.data);
+      setProfile(userRes.data);
     } catch (err) {
       console.error("Failed to load profile data:", err);
     } finally {
@@ -46,6 +38,21 @@ const ProfilePage = () => {
   useEffect(() => {
     fetchProfileAndSnippets();
   }, []);
+
+  const uniqueLanguagesCount = new Set(
+    mySnippets.map((snippet) => snippet.language?.toLowerCase()),
+  ).size;
+
+  const totalViewsCount = mySnippets.reduce(
+    (sum, snippet) => sum + (snippet.views || 0),
+    0,
+  );
+
+  const formatJoinedDate = (dateString?: string) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  };
 
   if (loading) {
     return <div className="profile-loading">Accessing Your Vault...</div>;
@@ -62,7 +69,7 @@ const ProfilePage = () => {
         <section className="profile-hero-card glass-panel">
           <div className="hero-main-info">
             <img
-              src={profile?.avatarUrl}
+              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
               alt={profile?.username}
               className="hero-avatar"
             />
@@ -70,7 +77,9 @@ const ProfilePage = () => {
               <h1 className="hero-username">{profile?.username}</h1>
               <p className="hero-fullname">John D.</p>
               <p className="hero-bio">Software Engineer & Code Hoarder</p>
-              <p className="hero-joined">Joined: {profile?.joinedDate}</p>
+              <p className="hero-joined">
+                Joined: {formatJoinedDate(profile?.createdAt)}
+              </p>
             </div>
           </div>
 
@@ -93,7 +102,7 @@ const ProfilePage = () => {
             <span className="stat-icon">👁</span>
             <div className="stat-info">
               <span className="stat-label">Total Views</span>
-              <span className="stat-value">1.5k</span>
+              <span className="stat-value">{totalViewsCount}</span>
             </div>
           </div>
 
@@ -101,7 +110,7 @@ const ProfilePage = () => {
             <span className="stat-icon">{}</span>
             <div className="stat-info">
               <span className="stat-label">Used Languages</span>
-              <span className="stat-value">12</span>
+              <span className="stat-value">{uniqueLanguagesCount}</span>
             </div>
           </div>
 
@@ -109,7 +118,7 @@ const ProfilePage = () => {
             <span className="stat-icon">🏷</span>
             <div className="stat-info">
               <span className="stat-label">Top Tag</span>
-              <span className="stat-value-tag">{profile?.topTag}</span>
+              <span className="stat-value-tag">#nestjs</span>
             </div>
           </div>
         </section>
@@ -150,17 +159,6 @@ const ProfilePage = () => {
                     Created: <strong>Neon Button</strong>
                   </p>
                   <span className="activity-time">5h ago</span>
-                </div>
-              </div>
-
-              <div className="activity-item">
-                <span className="activity-icon-tag">🏷</span>
-                <div>
-                  <p>
-                    Added Tag: <span className="text-neon-cyan">#docker</span>{" "}
-                    to Deno Basics
-                  </p>
-                  <span className="activity-time">1d ago</span>
                 </div>
               </div>
             </div>
