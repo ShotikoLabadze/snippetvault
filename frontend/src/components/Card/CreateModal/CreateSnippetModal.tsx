@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import api from "../../../api/axios";
 import "./CreateSnippetModal.css";
 
@@ -20,6 +21,22 @@ const CreateSnippetModal = ({
   const [code, setCode] = useState("");
   const [tags, setTags] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -51,9 +68,9 @@ const CreateSnippetModal = ({
     }
   };
 
-  return (
+  const modal = (
     <div className="modal-overlay" onClick={handleOverlayClick}>
-      <div className="modal-content">
+      <div className="modal-content" role="dialog" aria-modal="true">
         <div className="modal-header">
           <h2 className="modal-title">
             <span className="title-plus">+</span> New Snippet
@@ -117,6 +134,7 @@ const CreateSnippetModal = ({
                 required
               />
             </div>
+
             <div className="form-group lang-group">
               <label className="form-label">
                 <span className="label-icon">⌘</span> Language
@@ -161,6 +179,8 @@ const CreateSnippetModal = ({
       </div>
     </div>
   );
+
+  return createPortal(modal, document.body);
 };
 
 export default CreateSnippetModal;
