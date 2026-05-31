@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 import CreateSnippetModal from "../../components/CreateModal/CreateSnippetModal";
 import Navbar from "../../components/Navbar/Navbar";
@@ -12,6 +13,7 @@ interface UserProfile {
 }
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [mySnippets, setMySnippets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,8 +41,15 @@ const ProfilePage = () => {
     fetchProfileAndSnippets();
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   const uniqueLanguagesCount = new Set(
-    mySnippets.map((snippet) => snippet.language?.toLowerCase()),
+    mySnippets
+      .map((snippet) => snippet.language?.toLowerCase())
+      .filter(Boolean),
   ).size;
 
   const totalViewsCount = mySnippets.reduce(
@@ -67,25 +76,35 @@ const ProfilePage = () => {
 
       <main className="profile-layout">
         <section className="profile-hero-card glass-panel">
-          <div className="hero-main-info">
+          <div className="profile-hero-left">
             <img
               src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
               alt={profile?.username}
-              className="hero-avatar"
+              className="profile-avatar"
             />
             <div className="hero-text-details">
-              <h1 className="hero-username">{profile?.username}</h1>
-              <p className="hero-fullname">John D.</p>
-              <p className="hero-bio">Software Engineer & Code Hoarder</p>
-              <p className="hero-joined">
+              <h1 className="profile-username">{profile?.username}</h1>
+              <p className="profile-fullname">John D.</p>
+              <p className="profile-bio">Software Engineer & Code Hoarder</p>
+              <p className="profile-joined">
                 Joined: {formatJoinedDate(profile?.createdAt)}
               </p>
             </div>
           </div>
 
-          <div className="hero-actions-buttons">
-            <button className="btn-profile-edit">Edit Profile</button>
-            <button className="btn-profile-password">Change Password</button>
+          <div className="profile-actions">
+            <button className="profile-btn btn-profile-edit">
+              Edit Profile
+            </button>
+            <button className="profile-btn btn-profile-password">
+              Change Password
+            </button>
+            <button
+              className="profile-btn btn-profile-logout"
+              onClick={handleLogout}
+            >
+              Logout 🚪
+            </button>
           </div>
         </section>
 
@@ -107,7 +126,7 @@ const ProfilePage = () => {
           </div>
 
           <div className="stat-card glass-panel">
-            <span className="stat-icon">{}</span>
+            <span className="stat-icon">⚙️</span>
             <div className="stat-info">
               <span className="stat-label">Used Languages</span>
               <span className="stat-value">{uniqueLanguagesCount}</span>
@@ -118,16 +137,16 @@ const ProfilePage = () => {
             <span className="stat-icon">🏷</span>
             <div className="stat-info">
               <span className="stat-label">Top Tag</span>
-              <span className="stat-value-tag">#nestjs</span>
+              <span className="stat-value stat-value-tag">#nestjs</span>
             </div>
           </div>
         </section>
 
         <div className="profile-bottom-section">
-          <section className="pinned-snippets-zone">
+          <section className="profile-snippets-grid-wrapper">
             <h2 className="section-title">Your Pinned Snippets</h2>
             {mySnippets.length === 0 ? (
-              <p className="no-snippets-msg">
+              <p className="empty-vault">
                 Your vault is empty. Create your first snippet!
               </p>
             ) : (
@@ -140,12 +159,12 @@ const ProfilePage = () => {
           </section>
 
           <aside className="recent-activity-panel glass-panel">
-            <h2 className="activity-title">Recent Activity</h2>
+            <h2 className="section-title">Recent Activity</h2>
             <div className="activity-timeline">
               <div className="activity-item">
-                <span className="activity-icon-sync">🔄</span>
-                <div>
-                  <p>
+                <span className="activity-icon activity-icon-sync">🔄</span>
+                <div className="activity-content">
+                  <p className="activity-text">
                     Updated: <strong>JWT Auth Guard</strong>
                   </p>
                   <span className="activity-time">2h ago</span>
@@ -153,9 +172,9 @@ const ProfilePage = () => {
               </div>
 
               <div className="activity-item">
-                <span className="activity-icon-edit">📝</span>
-                <div>
-                  <p>
+                <span className="activity-icon activity-icon-create">📝</span>
+                <div className="activity-content">
+                  <p className="activity-text">
                     Created: <strong>Neon Button</strong>
                   </p>
                   <span className="activity-time">5h ago</span>

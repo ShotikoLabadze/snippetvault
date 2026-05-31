@@ -7,7 +7,8 @@
     #05070f 100%
   );
   color: #e6f1ff;
-  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   padding: 24px;
 }
 
@@ -129,6 +130,19 @@
     inset 0 0 12px rgba(0, 229, 255, 0.15);
   color: #ffffff;
   border-color: #00e5ff;
+}
+
+.btn-profile-logout {
+  color: #ff3366;
+  border-color: rgba(255, 51, 102, 0.6);
+}
+
+.btn-profile-logout:hover {
+  background: rgba(255, 51, 102, 0.12);
+  border-color: #ff3366;
+  box-shadow:
+    0 0 16px rgba(255, 51, 102, 0.5),
+    inset 0 0 12px rgba(255, 51, 102, 0.15);
 }
 
 .profile-stats-row {
@@ -280,12 +294,6 @@
   box-shadow: 0 0 12px rgba(0, 229, 255, 0.25);
 }
 
-.activity-icon-tag {
-  background: rgba(199, 125, 255, 0.12);
-  color: #c77dff;
-  box-shadow: 0 0 12px rgba(199, 125, 255, 0.4);
-}
-
 .activity-content {
   display: flex;
   flex-direction: column;
@@ -302,12 +310,6 @@
 .activity-text strong {
   color: #00e5ff;
   font-weight: 600;
-}
-
-.activity-tag-purple {
-  color: #c77dff;
-  font-weight: 600;
-  text-shadow: 0 0 6px rgba(199, 125, 255, 0.5);
 }
 
 .activity-time {
@@ -343,22 +345,18 @@
   .profile-stats-row {
     grid-template-columns: repeat(2, 1fr);
   }
-
   .profile-bottom-section {
     grid-template-columns: 1fr;
   }
-
   .profile-hero-card {
     flex-direction: column;
     text-align: center;
     align-items: center;
   }
-
   .profile-hero-left {
     flex-direction: column;
     text-align: center;
   }
-
   .profile-actions {
     flex-direction: row;
     justify-content: center;
@@ -369,12 +367,10 @@
   .profile-stats-row {
     grid-template-columns: 1fr;
   }
-
   .profile-actions {
     flex-direction: column;
     width: 100%;
   }
-
   .profile-btn {
     width: 100%;
   }
