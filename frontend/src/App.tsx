@@ -6,6 +6,7 @@ import {
   Routes,
 } from "react-router-dom";
 import "./App.css";
+import CreateSnippetModal from "./components/CreateModal/CreateSnippetModal";
 import RootLayout from "./Layouts/RootLayout";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -15,6 +16,13 @@ import SnippetPage from "./pages/SnippetPage/SnippetPage";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSnippetCreated = () => {
+    setIsModalOpen(false);
+
+    window.location.reload();
+  };
 
   return (
     <Router>
@@ -27,6 +35,7 @@ function App() {
             <RootLayout
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
+              onNewSnippetClick={() => setIsModalOpen(true)}
             />
           }
         >
@@ -40,6 +49,12 @@ function App() {
 
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
+
+      <CreateSnippetModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSnippetCreated={handleSnippetCreated}
+      />
     </Router>
   );
 }

@@ -3,14 +3,49 @@
   justify-content: space-between;
   align-items: center;
   gap: 24px;
-  padding: 16px 48px;
-  background: rgba(10, 18, 32, 0.4);
-  border-bottom: 1px solid rgba(0, 229, 255, 0.15);
-  backdrop-filter: blur(10px);
+  padding: 24px max(24px, 10%);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-card);
   position: relative;
   z-index: 10;
   width: 100%;
   box-sizing: border-box;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.logo-mark img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.search-bar {
+  flex: 1;
+  max-width: 550px;
+  padding: 12px 20px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-card);
+  border-radius: 10px;
+  color: var(--text-main);
+  font-size: 15px;
+  outline: none;
+  box-shadow: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.search-bar:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(78, 101, 243, 0.12);
 }
 
 .search-placeholder {
@@ -35,38 +70,47 @@
 }
 
 .profile-trigger:hover {
-  background: rgba(0, 229, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .user-avatar {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  border: 1.5px solid #00e5ff;
+  border: 1px solid var(--border-card);
+  background: #2a344a;
 }
 
 .profile-text {
-  color: #e6f1ff;
+  color: var(--text-muted);
   font-size: 14px;
   font-weight: 500;
+  transition: color 0.2s;
+}
+
+.profile-trigger:hover .profile-text {
+  color: var(--text-main);
 }
 
 .btn-new-snippet {
-  background: transparent;
-  color: #fff;
-  border: 1px solid rgba(0, 229, 255, 0.4);
-  padding: 8px 16px;
+  background: var(--btn-primary);
+  color: #ffffff;
+  border: none;
+  padding: 8px 18px;
   border-radius: 8px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
-  transition: all 0.2s ease;
+  transition:
+    background 0.2s,
+    transform 0.1s;
 }
 
 .btn-new-snippet:hover {
-  background: rgba(0, 229, 255, 0.15);
-  border-color: #00e5ff;
-  box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+  background: var(--btn-primary-hover);
   transform: translateY(-1px);
+}
+
+.btn-new-snippet:active {
+  transform: translateY(0);
 }
