@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import closedEye from "../assets/closedEye.png";
 import openEye from "../assets/eye.png";
+import logo from "../assets/logo.png";
 import "./Login.css";
 
 const Register = () => {
@@ -18,7 +19,6 @@ const Register = () => {
     e.preventDefault();
     try {
       await api.post("/auth/register", formData);
-
       navigate("/login");
     } catch (err) {
       console.error(err);
@@ -30,7 +30,9 @@ const Register = () => {
       <div className="auth-card">
         <header className="auth-header">
           <div className="auth-brand">
-            <span className="auth-logo">{"{ }"}</span>
+            <span className="auth-logo">
+              <img src={logo} alt="SnippetVault Logo" />
+            </span>
             <h1 className="auth-brand-name">
               Snippet<span>Vault</span>
             </h1>
@@ -41,7 +43,6 @@ const Register = () => {
             Join the vault and secure your snippets.
           </p>
         </header>
-
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="auth-input-group">
             <label className="auth-label" htmlFor="username">
@@ -59,7 +60,6 @@ const Register = () => {
               }
             />
           </div>
-
           <div className="auth-input-group">
             <label className="auth-label" htmlFor="email">
               Email Address
@@ -76,7 +76,6 @@ const Register = () => {
               }
             />
           </div>
-
           <div className="auth-input-group">
             <label className="auth-label" htmlFor="password">
               Password
@@ -107,7 +106,6 @@ const Register = () => {
               </button>
             </div>
           </div>
-
           <button
             type="submit"
             className="auth-submit-btn"
@@ -115,7 +113,6 @@ const Register = () => {
           >
             Register Now
           </button>
-
           <footer className="auth-footer">
             Already have an account?{" "}
             <Link to="/login" className="auth-link">

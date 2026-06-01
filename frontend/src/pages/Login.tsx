@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import closedEye from "../assets/closedEye.png";
 import openEye from "../assets/eye.png";
+import logo from "../assets/logo.png";
 import "./Login.css";
 
 const Login = () => {
@@ -28,7 +29,9 @@ const Login = () => {
       <div className="auth-card">
         <header className="auth-header">
           <div className="auth-brand">
-            <span className="auth-logo">{"{ }"}</span>
+            <span className="auth-logo">
+              <img src={logo} alt="SnippetVault Logo" />
+            </span>
             <h1 className="auth-brand-name">
               Snippet<span>Vault</span>
             </h1>
