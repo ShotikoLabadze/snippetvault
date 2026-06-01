@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 import CreateSnippetModal from "../../components/CreateModal/CreateSnippetModal";
-import Navbar from "../../components/Navbar/Navbar";
 import SnippetCard from "../../components/SnippetCard/SnippetCard";
 import "./ProfilePage.css";
 
@@ -69,11 +68,6 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page-container">
-      <Navbar
-        showSearchBar={false}
-        onNewSnippetClick={() => setIsModalOpen(true)}
-      />
-
       <main className="profile-layout">
         <section className="profile-hero-card glass-panel">
           <div className="profile-hero-left">
@@ -144,7 +138,26 @@ const ProfilePage = () => {
 
         <div className="profile-bottom-section">
           <section className="profile-snippets-grid-wrapper">
-            <h2 className="section-title">Your Pinned Snippets</h2>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "20px",
+              }}
+            >
+              <h2 className="section-title" style={{ margin: 0 }}>
+                Your Pinned Snippets
+              </h2>
+              <button
+                className="btn-new-snippet"
+                onClick={() => setIsModalOpen(true)}
+                style={{ padding: "8px 16px", fontSize: "13px" }}
+              >
+                + New Snippet
+              </button>
+            </div>
+
             {mySnippets.length === 0 ? (
               <p className="empty-vault">
                 Your vault is empty. Create your first snippet!

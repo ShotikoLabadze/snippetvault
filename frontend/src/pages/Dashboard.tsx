@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import CreateSnippetModal from "../components/CreateModal/CreateSnippetModal";
-import Navbar from "../components/Navbar/Navbar";
 import SnippetCard from "../components/SnippetCard/SnippetCard";
 
-const Dashboard = () => {
+interface DashboardProps {
+  searchQuery: string;
+}
+
+const Dashboard = ({ searchQuery }: DashboardProps) => {
   const [snippets, setSnippets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchSnippets = async () => {
@@ -37,15 +39,19 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-page">
-      <Navbar
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        onNewSnippetClick={() => setIsModalOpen(true)}
-      />
-
-      <h1 className="dashboard-title" style={{ padding: "20px 48px 0" }}>
-        My Snippet Vault
-      </h1>
+      <div
+        className="dashboard-header"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "32px 48px 12px",
+        }}
+      >
+        <h1 className="dashboard-title" style={{ margin: 0, padding: 0 }}>
+          My Snippet Vault
+        </h1>
+      </div>
 
       {filteredSnippets.length === 0 ? (
         <p style={{ color: "#cfeaff", padding: "0 48px" }}>
@@ -60,6 +66,7 @@ const Dashboard = () => {
           ))}
         </ul>
       )}
+
       <CreateSnippetModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
