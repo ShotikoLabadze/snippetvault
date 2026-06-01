@@ -50,4 +50,17 @@ export class UsersService {
       where: { email },
     });
   }
+
+  async update(id: string, updateData: { username?: string }): Promise<any> {
+    return this.prisma.user.update({
+      where: { id },
+      data: updateData,
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        createdAt: true,
+      },
+    });
+  }
 }

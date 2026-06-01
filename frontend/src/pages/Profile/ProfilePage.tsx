@@ -18,10 +18,13 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editUsername, setEditUsername] = useState("");
+  const [saveLoading, setSaveLoading] = useState(false);
+
   const fetchProfileAndSnippets = async () => {
     try {
       setLoading(true);
-
       const [snippetsRes, userRes] = await Promise.all([
         api.get("/snippets/my-snippets"),
         api.get("/users/me"),
@@ -29,6 +32,7 @@ const ProfilePage = () => {
 
       setMySnippets(snippetsRes.data);
       setProfile(userRes.data);
+      setEditUsername(userRes.data.username);
     } catch (err) {
       console.error("Failed to load profile data:", err);
     } finally {
@@ -39,6 +43,24 @@ const ProfilePage = () => {
   useEffect(() => {
     fetchProfileAndSnippets();
   }, []);
+
+  const handleSaveProfile = async () => {
+    if (!editUsername.trim()) return alert("Username cannot be empty");
+
+    try {
+      setSaveLoading(true);
+
+      const response = await api.patch("/users/me", { username: editUsername });
+
+      setProfile(response.data);
+      setIsEditing(false);
+    } catch (err) {
+      console.error("Failed to update profile:", err);
+      alert("Failed to update profile. Please try again.");
+    } finally {
+      setSaveLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -77,7 +99,19 @@ const ProfilePage = () => {
               className="profile-avatar"
             />
             <div className="hero-text-details">
-              <h1 className="profile-username">{profile?.username}</h1>
+              {isEditing ? (
+                <input
+                  type="text"
+                  className="profile-username-input"
+                  value={editUsername}
+                  onChange={(e) => setEditUsername(e.target.value)}
+                  disabled={saveLoading}
+                  autoFocus
+                />
+              ) : (
+                <h1 className="profile-username">{profile?.username}</h1>
+              )}
+
               <p className="profile-fullname">John D.</p>
               <p className="profile-bio">Software Engineer & Code Hoarder</p>
               <p className="profile-joined">
@@ -87,18 +121,45 @@ const ProfilePage = () => {
           </div>
 
           <div className="profile-actions">
-            <button className="profile-btn btn-profile-edit">
-              Edit Profile
-            </button>
-            <button className="profile-btn btn-profile-password">
-              Change Password
-            </button>
-            <button
-              className="profile-btn btn-profile-logout"
-              onClick={handleLogout}
-            >
-              Logout 🚪
-            </button>
+            {isEditing ? (
+              <>
+                <button
+                  className="profile-btn btn-profile-save"
+                  onClick={handleSaveProfile}
+                  disabled={saveLoading}
+                >
+                  {saveLoading ? "Saving..." : "Save Changes"}
+                </button>
+                <button
+                  className="profile-btn"
+                  onClick={() => {
+                    setIsEditing(false);
+                    setEditUsername(profile?.username || "");
+                  }}
+                  disabled={saveLoading}
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="profile-btn btn-profile-edit"
+                  onClick={() => setIsEditing(true)}
+                >
+                  Edit Profile
+                </button>
+                <button className="profile-btn btn-profile-password">
+                  Change Password
+                </button>
+                <button
+                  className="profile-btn btn-profile-logout"
+                  onClick={handleLogout}
+                >
+                  Logout 🚪
+                </button>
+              </>
+            )}
           </div>
         </section>
 
