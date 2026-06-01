@@ -1,0 +1,21 @@
+:root {
+  --bg-main: #141a29;
+  --bg-surface: #1f2738;
+  --bg-input: #1a2233;
+  --border-card: #2a344a;
+  --border-focus: #4e65f3;
+  --text-main: #ffffff;
+  --text-muted: #8b97b1;
+  --btn-primary: #4e65f3;
+  --btn-primary-hover: #3d52d9;
+  --badge-bg: #273147;
+  --badge-text: #a4b3d6;
+  --code-block-bg: #0f1420;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  margin: 0;
+  font-family: "Inter", sans-serif;
+}
