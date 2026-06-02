@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../api/axios";
+import { AuthAPI } from "../../api/auth";
+import { SnippetAPI } from "../../api/snippets";
 import CreateSnippetModal from "../../components/CreateModal/CreateSnippetModal";
 import SnippetCard from "../../components/SnippetCard/SnippetCard";
 import "./ProfilePage.css";
@@ -35,14 +36,17 @@ const ProfilePage = () => {
     try {
       setLoading(true);
 
-      const [snippetsRes, userRes] = await Promise.all([
-        api.get("/snippets/my-snippets"),
-        api.get("/users/me"),
-      ]);
+      const userData = await AuthAPI.getMe();
+      setProfile(userData);
+      setEditUsername(userData.username);
 
-      setMySnippets(snippetsRes.data);
-      setProfile(userRes.data);
-      setEditUsername(userRes.data.username);
+      const allSnippets = await SnippetAPI.getAll();
+
+      const userSnippets = allSnippets.filter(
+        (snippet: any) => snippet.userId === userData.id,
+      );
+
+      setMySnippets(userSnippets);
     } catch (err) {
       console.error("Failed to load profile data:", err);
     } finally {
@@ -59,8 +63,8 @@ const ProfilePage = () => {
 
     try {
       setSaveLoading(true);
-      const response = await api.patch("/users/me", { username: editUsername });
-      setProfile(response.data);
+      const updatedUser = await AuthAPI.login({ username: editUsername });
+      setProfile(updatedUser);
       setIsEditing(false);
     } catch (err) {
       console.error("Failed to update profile:", err);
@@ -89,7 +93,7 @@ const ProfilePage = () => {
 
     try {
       setPasswordLoading(true);
-      await api.patch("/users/change-password", {
+      await AuthAPI.register({
         oldPassword: passwordForm.oldPassword,
         newPassword: passwordForm.newPassword,
       });
@@ -131,6 +135,57 @@ const ProfilePage = () => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  };
+
+  const formatTimeAgo = (dateString: string) => {
+    if (!dateString) return "Just now";
+    const now = new Date();
+    const past = new Date(dateString);
+    const msPerMinute = 60 * 1000;
+    const msPerHour = msPerMinute * 60;
+    const msPerDay = msPerHour * 24;
+    const elapsed = now.getTime() - past.getTime();
+
+    if (elapsed < msPerMinute) return "Just now";
+    if (elapsed < msPerHour) return Math.round(elapsed / msPerMinute) + "m ago";
+    if (elapsed < msPerDay) return Math.round(elapsed / msPerHour) + "h ago";
+    return past.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  };
+
+  const getTopTag = () => {
+    const tagCounts: { [key: string]: number } = {};
+    mySnippets.forEach((snippet) => {
+      if (snippet.tags && Array.isArray(snippet.tags)) {
+        snippet.tags.forEach((tag: string) => {
+          const cleanedTag = tag.trim().toLowerCase();
+          if (cleanedTag) {
+            tagCounts[cleanedTag] = (tagCounts[cleanedTag] || 0) + 1;
+          }
+        });
+      }
+    });
+
+    let topTag = "none";
+    let maxCount = 0;
+
+    Object.entries(tagCounts).forEach(([tag, count]) => {
+      if (count > maxCount) {
+        maxCount = count;
+        topTag = tag.startsWith("#") ? tag : `#${tag}`;
+      }
+    });
+
+    return topTag;
+  };
+
+  const getRecentActivity = () => {
+    return [...mySnippets]
+      .sort((a, b) => {
+        const dateA = new Date(a.updatedAt || a.createdAt).getTime();
+        const dateB = new Date(b.updatedAt || b.createdAt).getTime();
+        return dateB - dateA;
+      })
+      .slice(0, 5);
   };
 
   if (loading) {
@@ -314,7 +369,7 @@ const ProfilePage = () => {
             <span className="stat-icon">🏷</span>
             <div className="stat-info">
               <span className="stat-label">Top Tag</span>
-              <span className="stat-value stat-value-tag">#nestjs</span>
+              <span className="stat-value stat-value-tag">{getTopTag()}</span>
             </div>
           </div>
         </section>
@@ -349,25 +404,35 @@ const ProfilePage = () => {
           <aside className="recent-activity-panel glass-panel">
             <h2 className="section-title">Recent Activity</h2>
             <div className="activity-timeline">
-              <div className="activity-item">
-                <span className="activity-icon activity-icon-sync">🔄</span>
-                <div className="activity-content">
-                  <p className="activity-text">
-                    Updated: <strong>JWT Auth Guard</strong>
-                  </p>
-                  <span className="activity-time">2h ago</span>
-                </div>
-              </div>
-
-              <div className="activity-item">
-                <span className="activity-icon activity-icon-create">📝</span>
-                <div className="activity-content">
-                  <p className="activity-text">
-                    Created: <strong>Neon Button</strong>
-                  </p>
-                  <span className="activity-time">5h ago</span>
-                </div>
-              </div>
+              {getRecentActivity().length === 0 ? (
+                <p className="empty-vault" style={{ padding: 0 }}>
+                  No recent activity
+                </p>
+              ) : (
+                getRecentActivity().map((snippet) => {
+                  const isUpdated =
+                    snippet.updatedAt &&
+                    snippet.updatedAt !== snippet.createdAt;
+                  return (
+                    <div key={snippet.id} className="activity-item">
+                      <span className="activity-icon">
+                        {isUpdated ? "🔄" : "📝"}
+                      </span>
+                      <div className="activity-content">
+                        <p className="activity-text">
+                          {isUpdated ? "Updated: " : "Created: "}
+                          <strong>{snippet.title}</strong>
+                        </p>
+                        <span className="activity-time">
+                          {formatTimeAgo(
+                            snippet.updatedAt || snippet.createdAt,
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </aside>
         </div>
