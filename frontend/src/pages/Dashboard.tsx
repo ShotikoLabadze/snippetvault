@@ -60,7 +60,7 @@ const Dashboard = ({ searchQuery }: DashboardProps) => {
       ) : (
         <ul className="masonry-grid" style={{ padding: "20px 48px" }}>
           {filteredSnippets.map((snippet) => (
-            <li key={snippet._id} className="masonry-item">
+            <li key={snippet.id} className="masonry-item">
               <SnippetCard snippet={snippet} />
             </li>
           ))}

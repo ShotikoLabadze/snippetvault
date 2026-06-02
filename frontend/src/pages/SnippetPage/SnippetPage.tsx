@@ -2,14 +2,12 @@ import Prism from "prismjs";
 import "prismjs/plugins/autoloader/prism-autoloader";
 import "prismjs/themes/prism-tomorrow.css";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import api from "../../api/axios";
-import logo from "../../assets/logo.png";
 import "./SnippetPage.css";
 
 const SnippetPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const [snippet, setSnippet] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -62,37 +60,6 @@ const SnippetPage = () => {
 
   return (
     <div className="snippet-page">
-      <div className="bg-icons">
-        <span className="i1">{"{ }"}</span>
-        <span className="i2">{"</>"}</span>
-        <span className="i3">🛡</span>
-        <span className="i4">✦</span>
-        <span className="i5">📋</span>
-        <span className="i6">✦</span>
-      </div>
-
-      <header className="navbar">
-        <div
-          className="logo"
-          onClick={() => navigate("/dashboard")}
-          style={{ cursor: "pointer" }}
-        >
-          <div className="logo-mark">
-            <img src={logo} alt="Logo" />
-          </div>
-          SnippetVault
-        </div>
-        <input
-          type="text"
-          className="search-bar"
-          placeholder="Search for snippets..."
-        />
-        <div className="user-info">
-          <img src="#" alt="User" />
-          <span></span>
-        </div>
-      </header>
-
       <div className="snippet-layout">
         <section className="glass-panel">
           <div className="snippet-header">
@@ -105,10 +72,6 @@ const SnippetPage = () => {
             {snippet.description ||
               "No description provided for this snippet. You can add one by editing."}
           </p>
-
-          <div className="tabs">
-            <button className="tab active">Snippet</button>
-          </div>
 
           <div className="code-box">
             <pre className="line-numbers">
@@ -139,10 +102,7 @@ const SnippetPage = () => {
               {snippet.downloads || "0"}
             </div>
             <div className="meta-row">
-              <span className="meta-icon" style={{ color: "#4ade80" }}>
-                ♥
-              </span>{" "}
-              Likes: {snippet.likes || "0"}
+              <span className="meta-icon">♥</span> Likes: {snippet.likes || "0"}
             </div>
           </div>
 
@@ -159,11 +119,11 @@ const SnippetPage = () => {
           <button className="btn btn-copy" onClick={handleCopy}>
             Copy Code
           </button>
-          <button className="btn btn-fav" onClick={handleEdit}>
+          <button className="btn" onClick={handleEdit}>
             ♡ Add to Favorites
           </button>
           <button
-            className="btn btn-share"
+            className="btn"
             onClick={() => alert("Link copied to share!")}
           >
             ⇗ Share Snippet
