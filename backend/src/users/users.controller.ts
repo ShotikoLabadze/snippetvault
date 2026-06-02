@@ -20,4 +20,11 @@ export class UsersController {
     const userId = req.user.id;
     return await this.usersService.update(userId, body);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('change-password')
+  async changePassword(@Req() req: any, @Body() body: any) {
+    const userId = req.user.id;
+    return await this.usersService.changePassword(userId, body);
+  }
 }

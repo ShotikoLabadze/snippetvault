@@ -22,9 +22,19 @@ const ProfilePage = () => {
   const [editUsername, setEditUsername] = useState("");
   const [saveLoading, setSaveLoading] = useState(false);
 
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+
   const fetchProfileAndSnippets = async () => {
     try {
       setLoading(true);
+
       const [snippetsRes, userRes] = await Promise.all([
         api.get("/snippets/my-snippets"),
         api.get("/users/me"),
@@ -49,9 +59,7 @@ const ProfilePage = () => {
 
     try {
       setSaveLoading(true);
-
       const response = await api.patch("/users/me", { username: editUsername });
-
       setProfile(response.data);
       setIsEditing(false);
     } catch (err) {
@@ -59,6 +67,47 @@ const ProfilePage = () => {
       alert("Failed to update profile. Please try again.");
     } finally {
       setSaveLoading(false);
+    }
+  };
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordError("");
+
+    if (!passwordForm.oldPassword || !passwordForm.newPassword) {
+      setPasswordError("All fields are required");
+      return;
+    }
+    if (passwordForm.newPassword.length < 6) {
+      setPasswordError("New password must be at least 6 characters long");
+      return;
+    }
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      setPasswordError("New passwords do not match");
+      return;
+    }
+
+    try {
+      setPasswordLoading(true);
+      await api.patch("/users/change-password", {
+        oldPassword: passwordForm.oldPassword,
+        newPassword: passwordForm.newPassword,
+      });
+
+      alert("Password updated successfully! 🎉");
+      setIsChangingPassword(false);
+      setPasswordForm({
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (err: any) {
+      console.error(err);
+      setPasswordError(
+        err.response?.data?.message || "Failed to change password",
+      );
+    } finally {
+      setPasswordLoading(false);
     }
   };
 
@@ -102,7 +151,7 @@ const ProfilePage = () => {
               {isEditing ? (
                 <input
                   type="text"
-                  className="profile-username-input"
+                  className="profile-username-input hero-edit-input"
                   value={editUsername}
                   onChange={(e) => setEditUsername(e.target.value)}
                   disabled={saveLoading}
@@ -131,7 +180,7 @@ const ProfilePage = () => {
                   {saveLoading ? "Saving..." : "Save Changes"}
                 </button>
                 <button
-                  className="profile-btn"
+                  className="profile-btn profile-btn-cancel"
                   onClick={() => {
                     setIsEditing(false);
                     setEditUsername(profile?.username || "");
@@ -149,8 +198,13 @@ const ProfilePage = () => {
                 >
                   Edit Profile
                 </button>
-                <button className="profile-btn btn-profile-password">
-                  Change Password
+                <button
+                  className="profile-btn btn-profile-password"
+                  onClick={() => setIsChangingPassword(!isChangingPassword)}
+                >
+                  {isChangingPassword
+                    ? "Close Password Form"
+                    : "Change Password"}
                 </button>
                 <button
                   className="profile-btn btn-profile-logout"
@@ -162,6 +216,74 @@ const ProfilePage = () => {
             )}
           </div>
         </section>
+
+        {isChangingPassword && (
+          <section className="password-change-card">
+            <h3 className="password-card-title">Security Upgrade</h3>
+            <form
+              className="password-change-form"
+              onSubmit={handlePasswordChange}
+            >
+              <input
+                type="password"
+                placeholder="Current Password"
+                className="profile-username-input password-form-input"
+                value={passwordForm.oldPassword}
+                onChange={(e) =>
+                  setPasswordForm({
+                    ...passwordForm,
+                    oldPassword: e.target.value,
+                  })
+                }
+              />
+              <input
+                type="password"
+                placeholder="New Password"
+                className="profile-username-input password-form-input"
+                value={passwordForm.newPassword}
+                onChange={(e) =>
+                  setPasswordForm({
+                    ...passwordForm,
+                    newPassword: e.target.value,
+                  })
+                }
+              />
+              <input
+                type="password"
+                placeholder="Confirm New Password"
+                className="profile-username-input password-form-input"
+                value={passwordForm.confirmPassword}
+                onChange={(e) =>
+                  setPasswordForm({
+                    ...passwordForm,
+                    confirmPassword: e.target.value,
+                  })
+                }
+              />
+
+              {passwordError && (
+                <p className="password-error-message">{passwordError}</p>
+              )}
+
+              <div className="password-form-actions">
+                <button
+                  type="submit"
+                  className="profile-btn btn-profile-save"
+                  disabled={passwordLoading}
+                >
+                  {passwordLoading ? "Updating..." : "Update Password"}
+                </button>
+                <button
+                  type="button"
+                  className="profile-btn profile-btn-cancel"
+                  onClick={() => setIsChangingPassword(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </section>
+        )}
 
         <section className="profile-stats-row">
           <div className="stat-card glass-panel">
@@ -199,21 +321,13 @@ const ProfilePage = () => {
 
         <div className="profile-bottom-section">
           <section className="profile-snippets-grid-wrapper">
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "20px",
-              }}
-            >
-              <h2 className="section-title" style={{ margin: 0 }}>
+            <div className="snippets-section-header">
+              <h2 className="section-title snippets-header-title">
                 Your Pinned Snippets
               </h2>
               <button
-                className="btn-new-snippet"
+                className="btn-new-snippet new-snippet-profile-btn"
                 onClick={() => setIsModalOpen(true)}
-                style={{ padding: "8px 16px", fontSize: "13px" }}
               >
                 + New Snippet
               </button>
