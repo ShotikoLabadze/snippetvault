@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import api from "../../api/axios";
+import { SnippetAPI } from "../../api/snippets";
 import "./CreateSnippetModal.css";
 
 interface ModalProps {
@@ -64,13 +64,9 @@ const CreateSnippetModal = ({
 
     try {
       setAiLoading(true);
-      const response = await api.post("/ai/smart-fill", { code, language });
+      const data = await SnippetAPI.smartFill(code, language);
 
-      const {
-        title: aiTitle,
-        description: aiDescription,
-        tags: aiTags,
-      } = response.data;
+      const { title: aiTitle, description: aiDescription, tags: aiTags } = data;
 
       if (aiTitle) setTitle(aiTitle);
       if (aiDescription) setDescription(aiDescription);
@@ -99,7 +95,7 @@ const CreateSnippetModal = ({
     e.preventDefault();
     setLoading(true);
     try {
-      await api.post("/snippets", {
+      await SnippetAPI.create({
         title,
         imageUrl,
         description,

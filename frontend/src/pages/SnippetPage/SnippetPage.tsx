@@ -2,12 +2,14 @@ import Prism from "prismjs";
 import "prismjs/plugins/autoloader/prism-autoloader";
 import "prismjs/themes/prism-tomorrow.css";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/axios";
+import { SnippetAPI } from "../../api/snippets";
 import "./SnippetPage.css";
 
 const SnippetPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [snippet, setSnippet] = useState<any>(null);
   const [currentUser, setCurrentUser] = useState<any>(null);
@@ -27,12 +29,11 @@ const SnippetPage = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [snippetRes, userRes] = await Promise.all([
-        api.get(`/snippets/${id}`),
+      const [snippetData, userRes] = await Promise.all([
+        SnippetAPI.getById(id!),
         api.get("/users/me").catch(() => ({ data: null })),
       ]);
 
-      const snippetData = snippetRes.data.data || snippetRes.data;
       setSnippet(snippetData);
 
       setEditForm({
@@ -104,7 +105,7 @@ const SnippetPage = () => {
 
     try {
       setSaveLoading(true);
-      const response = await api.patch(`/snippets/${id}`, {
+      const updatedData = await SnippetAPI.update(id!, {
         title: editForm.title,
         description: editForm.description,
         language: editForm.language,
@@ -115,7 +116,7 @@ const SnippetPage = () => {
           .filter(Boolean),
       });
 
-      setSnippet(response.data);
+      setSnippet(updatedData);
       setIsEditing(false);
     } catch (err) {
       console.error("Failed to update snippet:", err);

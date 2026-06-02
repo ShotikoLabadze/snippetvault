@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../api/axios";
+import { AuthAPI } from "../api/auth";
 import closedEye from "../assets/closedEye.png";
 import openEye from "../assets/eye.png";
 import logo from "../assets/logo.png";
@@ -15,9 +15,8 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await api.post("/auth/login", formData);
-      localStorage.setItem("token", response.data.access_token);
-
+      const data = await AuthAPI.login(formData);
+      localStorage.setItem("token", data.access_token);
       navigate("/dashboard");
     } catch (err) {
       console.error(err);

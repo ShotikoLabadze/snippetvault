@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../api/axios";
+import { SnippetAPI } from "../api/snippets";
 import CreateSnippetModal from "../components/CreateModal/CreateSnippetModal";
 import SnippetCard from "../components/SnippetCard/SnippetCard";
 
@@ -14,8 +14,8 @@ const Dashboard = ({ searchQuery }: DashboardProps) => {
 
   const fetchSnippets = async () => {
     try {
-      const response = await api.get("/snippets");
-      const snippetData = response.data.data || response.data;
+      setLoading(true);
+      const snippetData = await SnippetAPI.getAll();
       setSnippets(snippetData);
     } catch (err) {
       console.error("Error fetching snippets:", err);
@@ -34,31 +34,22 @@ const Dashboard = ({ searchQuery }: DashboardProps) => {
       snippet.language?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  if (loading)
-    return <p style={{ padding: 20, color: "#fff" }}>Loading vault...</p>;
+  if (loading) {
+    return <div className="status-msg">Loading vault...</div>;
+  }
 
   return (
     <div className="dashboard-page">
-      <div
-        className="dashboard-header"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "32px 48px 12px",
-        }}
-      >
-        <h1 className="dashboard-title" style={{ margin: 0, padding: 0 }}>
-          My Snippet Vault
-        </h1>
+      <div className="dashboard-header">
+        <h1 className="dashboard-title">My Snippet Vault</h1>
       </div>
 
       {filteredSnippets.length === 0 ? (
-        <p style={{ color: "#cfeaff", padding: "0 48px" }}>
+        <p className="empty-vault-msg">
           {searchQuery ? "No matching snippets found!" : "Your vault is empty!"}
         </p>
       ) : (
-        <ul className="masonry-grid" style={{ padding: "20px 48px" }}>
+        <ul className="masonry-grid">
           {filteredSnippets.map((snippet) => (
             <li key={snippet.id} className="masonry-item">
               <SnippetCard snippet={snippet} />
