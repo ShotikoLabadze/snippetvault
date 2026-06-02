@@ -27,7 +27,9 @@ const Navbar = ({
         <div className="logo-mark">
           <img src={logo} alt="Logo" />
         </div>
-        SnippetVault
+        <h1 className="auth-brand-name">
+          Snippet<span>Vault</span>
+        </h1>
       </div>
 
       {showSearchBar ? (

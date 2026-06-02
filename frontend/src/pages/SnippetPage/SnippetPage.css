@@ -193,6 +193,18 @@
   color: #ff4a76;
 }
 
+.btn-edit-snippet {
+  background: transparent;
+  color: #4ade80 !important;
+  border: 1px solid rgba(74, 222, 128, 0.2) !important;
+  transition: all 0.2s ease;
+}
+
+.btn-edit-snippet:hover {
+  background: rgba(74, 222, 128, 0.08) !important;
+  border-color: #4ade80 !important;
+}
+
 @media (max-width: 1024px) {
   .snippet-layout {
     grid-template-columns: 1fr;
@@ -200,4 +212,78 @@
   .snippet-page {
     padding: 0 24px 32px;
   }
+}
+
+.edit-snippet-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.edit-form-row {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.edit-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.edit-form-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.edit-input-field {
+  background: var(--bg-input) !important;
+  border: 1px solid var(--border-card) !important;
+  color: var(--text-main) !important;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.edit-select-field {
+  background: var(--bg-input) !important;
+  border: 1px solid var(--border-card) !important;
+  color: var(--text-main) !important;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+  height: 40px;
+  cursor: pointer;
+}
+
+.edit-input-field:focus,
+.edit-select-field:focus {
+  border-color: var(--border-focus) !important;
+}
+
+.edit-textarea {
+  resize: vertical;
+}
+
+.edit-code-area {
+  font-family: "Fira Code", "JetBrains Mono", monospace !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  background: var(--code-block-bg) !important;
+  resize: vertical;
 }
