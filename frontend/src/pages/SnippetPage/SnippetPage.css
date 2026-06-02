@@ -314,3 +314,8 @@
     padding: 0 24px 32px;
   }
 }
+
+.btn-ai-explain.cooldown-active {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

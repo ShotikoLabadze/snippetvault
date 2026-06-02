@@ -2,14 +2,14 @@ import Prism from "prismjs";
 import "prismjs/plugins/autoloader/prism-autoloader";
 import "prismjs/themes/prism-tomorrow.css";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import { useParams } from "react-router-dom";
 import api from "../../api/axios";
 import { SnippetAPI } from "../../api/snippets";
 import "./SnippetPage.css";
 
 const SnippetPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const [snippet, setSnippet] = useState<any>(null);
   const [currentUser, setCurrentUser] = useState<any>(null);
@@ -25,6 +25,20 @@ const SnippetPage = () => {
     tags: "",
   });
   const [saveLoading, setSaveLoading] = useState(false);
+
+  const [explanation, setExplanation] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiCooldown, setAiCooldown] = useState(0);
+
+  useEffect(() => {
+    if (aiCooldown <= 0) return;
+
+    const timer = setInterval(() => {
+      setAiCooldown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [aiCooldown]);
 
   const fetchData = async () => {
     try {
@@ -123,6 +137,27 @@ const SnippetPage = () => {
       alert("Failed to update snippet. Please try again.");
     } finally {
       setSaveLoading(false);
+    }
+  };
+
+  const handleExplainCode = async () => {
+    try {
+      setAiLoading(true);
+      setExplanation("");
+      const data = await SnippetAPI.explain(snippet.code, snippet.language);
+      setExplanation(data.explanation);
+
+      setAiCooldown(60);
+    } catch (err: any) {
+      console.error("AI Explanation failed:", err);
+      if (err.response?.status === 429) {
+        alert("Too many requests! Please wait a moment. ⏳");
+        setAiCooldown(60);
+      } else {
+        alert("AI was unable to process the code. Please try again.");
+      }
+    } finally {
+      setAiLoading(false);
     }
   };
 
@@ -234,6 +269,22 @@ const SnippetPage = () => {
                   </code>
                 </pre>
               </div>
+
+              {(aiLoading || explanation) && (
+                <div className="ai-explanation-box">
+                  <h3 className="ai-explanation-title">✨ AI Code Analysis</h3>
+                  {aiLoading ? (
+                    <div className="ai-loading-skeleton">
+                      <div className="skeleton-line"></div>
+                      <div className="skeleton-line short"></div>
+                    </div>
+                  ) : (
+                    <div className="ai-explanation-text">
+                      <ReactMarkdown>{explanation}</ReactMarkdown>
+                    </div>
+                  )}
+                </div>
+              )}
             </>
           )}
         </section>
@@ -274,6 +325,20 @@ const SnippetPage = () => {
               </div>
               <div className="divider" />
             </>
+          )}
+
+          {!isEditing && (
+            <button
+              className={`btn btn-ai-explain ${aiCooldown > 0 ? "cooldown-active" : ""}`}
+              onClick={handleExplainCode}
+              disabled={aiLoading || aiCooldown > 0}
+            >
+              {aiLoading
+                ? "✨ Analyzing..."
+                : aiCooldown > 0
+                  ? `⏳ Wait ${aiCooldown}s`
+                  : "✨ Explain with AI"}
+            </button>
           )}
 
           <button

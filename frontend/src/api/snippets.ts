@@ -46,4 +46,9 @@ export const SnippetAPI = {
     const response = await api.post("/ai/smart-fill", { code, language });
     return response.data;
   },
+
+  explain: async (code: string, language: string) => {
+    const response = await api.post("/ai/explain", { code, language });
+    return response.data;
+  },
 };

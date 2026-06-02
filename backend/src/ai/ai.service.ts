@@ -45,4 +45,27 @@ export class AiService {
 
     return JSON.parse(responseText);
   }
+
+  async generateExplanation(
+    code: string,
+    language: string,
+  ): Promise<{ explanation: string }> {
+    const prompt = `
+      You are an expert developer and a great teacher. Explain the following ${language} code precisely for a developer library page.
+      Provide a high-level summary first, followed by 3-4 bullet points explaining the core logic, edge cases, or performance aspects.
+      Keep it professional, direct, and easy to read. Use Markdown formatting.
+
+      Code:
+      ${code}
+    `;
+
+    const response = await this.ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+    });
+
+    return {
+      explanation: response.text || 'No explanation available.',
+    };
+  }
 }

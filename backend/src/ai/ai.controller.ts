@@ -13,4 +13,11 @@ export class AiController {
   async smartFill(@Body() body: { code: string; language: string }) {
     return this.aiService.generateSmartFill(body.code, body.language);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Throttle({ default: { limit: 1, ttl: 60000 } })
+  @Post('explain')
+  async explain(@Body() body: { code: string; language: string }) {
+    return this.aiService.generateExplanation(body.code, body.language);
+  }
 }
