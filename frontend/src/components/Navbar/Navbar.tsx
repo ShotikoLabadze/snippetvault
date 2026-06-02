@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import "./Navbar.css";
@@ -16,12 +17,18 @@ const Navbar = ({
   onNewSnippetClick,
 }: NavbarProps) => {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const closeMenu = () => setIsOpen(false);
 
   return (
-    <header className="navbar">
+    <header className={`navbar ${isOpen ? "is-open" : ""}`}>
       <div
         className="logo"
-        onClick={() => navigate("/dashboard")}
+        onClick={() => {
+          navigate("/dashboard");
+          closeMenu();
+        }}
         style={{ cursor: "pointer" }}
       >
         <div className="logo-mark">
@@ -32,27 +39,52 @@ const Navbar = ({
         </h1>
       </div>
 
-      {showSearchBar ? (
-        <input
-          type="text"
-          className="search-bar"
-          placeholder="Search Your Vault..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery?.(e.target.value)}
-        />
-      ) : (
-        <div className="search-placeholder" />
-      )}
+      <button
+        className="nav-toggle"
+        aria-label="Toggle menu"
+        aria-expanded={isOpen}
+        onClick={() => setIsOpen((v) => !v)}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
 
-      <div className="header-actions">
-        <div className="profile-trigger" onClick={() => navigate("/profile")}>
-          <img src="" alt="" className="user-avatar" />
-          <span className="profile-text">Profile ▾</span>
+      <div className="nav-collapse">
+        {showSearchBar ? (
+          <input
+            type="text"
+            className="search-bar"
+            placeholder="Search Your Vault..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery?.(e.target.value)}
+          />
+        ) : (
+          <div className="search-placeholder" />
+        )}
+
+        <div className="header-actions">
+          <div
+            className="profile-trigger"
+            onClick={() => {
+              navigate("/profile");
+              closeMenu();
+            }}
+          >
+            <img src="" alt="" className="user-avatar" />
+            <span className="profile-text">Profile ▾</span>
+          </div>
+
+          <button
+            className="btn-new-snippet"
+            onClick={() => {
+              onNewSnippetClick?.();
+              closeMenu();
+            }}
+          >
+            + New Snippet
+          </button>
         </div>
-
-        <button className="btn-new-snippet" onClick={onNewSnippetClick}>
-          + New Snippet
-        </button>
       </div>
     </header>
   );

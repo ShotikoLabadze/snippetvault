@@ -3,13 +3,13 @@
   justify-content: space-between;
   align-items: center;
   gap: 24px;
-  padding: 24px max(24px, 10%);
+  padding: 20px max(20px, 8%);
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-card);
   position: relative;
   z-index: 10;
   width: 100%;
-  box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
 .logo {
@@ -23,8 +23,28 @@
 
 .logo-mark img {
   width: 52px;
-
   object-fit: contain;
+  display: block;
+}
+
+.auth-brand-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-main);
+}
+
+.auth-brand-name span {
+  color: var(--btn-primary);
+}
+
+.nav-collapse {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  justify-content: space-between;
+  min-width: 0;
 }
 
 .search-bar {
@@ -37,20 +57,18 @@
   color: var(--text-main);
   font-size: 15px;
   outline: none;
-  box-shadow: none;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
+  transition: border-color 0.15s;
 }
 
 .search-bar:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(78, 101, 243, 0.12);
+}
+.search-bar::placeholder {
+  color: var(--text-muted);
 }
 
 .search-placeholder {
   flex: 1;
-  max-width: 500px;
 }
 
 .header-actions {
@@ -70,26 +88,21 @@
 }
 
 .profile-trigger:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-input);
 }
 
 .user-avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid var(--border-card);
-  background: #2a344a;
+  background: var(--badge-bg);
+  object-fit: cover;
 }
 
 .profile-text {
-  color: var(--text-muted);
+  color: var(--text-main);
   font-size: 14px;
   font-weight: 500;
-  transition: color 0.2s;
-}
-
-.profile-trigger:hover .profile-text {
-  color: var(--text-main);
 }
 
 .btn-new-snippet {
@@ -108,9 +121,119 @@
 
 .btn-new-snippet:hover {
   background: var(--btn-primary-hover);
-  transform: translateY(-1px);
 }
 
-.btn-new-snippet:active {
-  transform: translateY(0);
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: var(--text-main);
+  border-radius: 2px;
+  transition:
+    transform 0.25s,
+    opacity 0.25s;
+}
+
+.navbar.is-open .nav-toggle span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+.navbar.is-open .nav-toggle span:nth-child(2) {
+  opacity: 0;
+}
+.navbar.is-open .nav-toggle span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 16px 24px;
+    gap: 16px;
+  }
+  .profile-text {
+    display: none;
+  }
+  .auth-brand-name {
+    font-size: 18px;
+  }
+  .logo-mark img {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (max-width: 720px) {
+  .navbar {
+    padding: 14px 20px;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-collapse {
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      max-height 0.3s ease,
+      opacity 0.25s ease,
+      margin-top 0.25s;
+    margin-top: 0;
+  }
+
+  .navbar.is-open .nav-collapse {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 12px;
+  }
+
+  .search-bar {
+    max-width: none;
+    width: 100%;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .profile-trigger {
+    justify-content: flex-start;
+  }
+  .profile-text {
+    display: inline;
+  }
+  .btn-new-snippet {
+    width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+  .auth-brand-name {
+    font-size: 16px;
+  }
+  .logo-mark img {
+    width: 32px;
+    height: 32px;
+  }
 }
