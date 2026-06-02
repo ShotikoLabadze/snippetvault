@@ -1,0 +1,91 @@
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(5, 8, 15, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeInModal 0.2s ease-out;
+}
+
+.custom-modal-content {
+  width: 100%;
+  max-width: 400px;
+  padding: 24px !important;
+  border-radius: 12px !important;
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border-card) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  text-align: center;
+}
+
+.custom-modal-content.danger {
+  border-color: rgba(255, 74, 118, 0.4) !important;
+}
+
+.custom-modal-title {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.danger .custom-modal-title {
+  color: #ff4a76;
+}
+
+.custom-modal-message {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+.custom-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.custom-modal-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.custom-modal-btn.btn-cancel {
+  background: transparent;
+  border-color: var(--border-card);
+  color: var(--text-main);
+}
+
+.custom-modal-btn.btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-confirm-danger {
+  background: #ff4a76;
+  color: #fff;
+}
+
+.btn-confirm-danger:hover {
+  background: #ff3362;
+  box-shadow: 0 0 12px rgba(255, 74, 118, 0.3);
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

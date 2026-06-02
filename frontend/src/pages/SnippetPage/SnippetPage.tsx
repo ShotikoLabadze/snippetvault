@@ -3,13 +3,15 @@ import "prismjs/plugins/autoloader/prism-autoloader";
 import "prismjs/themes/prism-tomorrow.css";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/axios";
 import { SnippetAPI } from "../../api/snippets";
+import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 import "./SnippetPage.css";
 
 const SnippetPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [snippet, setSnippet] = useState<any>(null);
   const [currentUser, setCurrentUser] = useState<any>(null);
@@ -29,6 +31,7 @@ const SnippetPage = () => {
   const [explanation, setExplanation] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
   const [aiCooldown, setAiCooldown] = useState(0);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     if (aiCooldown <= 0) return;
@@ -85,7 +88,6 @@ const SnippetPage = () => {
     if (snippet?.code) {
       try {
         await navigator.clipboard.writeText(snippet.code);
-        alert("Code copied to clipboard! 🚀");
       } catch (err) {
         console.error("Failed to copy:", err);
       }
@@ -112,10 +114,7 @@ const SnippetPage = () => {
   };
 
   const handleSave = async () => {
-    if (!editForm.title.trim() || !editForm.code.trim()) {
-      alert("Title and Code fields cannot be empty!");
-      return;
-    }
+    if (!editForm.title.trim() || !editForm.code.trim()) return;
 
     try {
       setSaveLoading(true);
@@ -134,7 +133,6 @@ const SnippetPage = () => {
       setIsEditing(false);
     } catch (err) {
       console.error("Failed to update snippet:", err);
-      alert("Failed to update snippet. Please try again.");
     } finally {
       setSaveLoading(false);
     }
@@ -146,22 +144,32 @@ const SnippetPage = () => {
       setExplanation("");
       const data = await SnippetAPI.explain(snippet.code, snippet.language);
       setExplanation(data.explanation);
-
       setAiCooldown(60);
     } catch (err: any) {
       console.error("AI Explanation failed:", err);
       if (err.response?.status === 429) {
-        alert("Too many requests! Please wait a moment. ⏳");
         setAiCooldown(60);
-      } else {
-        alert("AI was unable to process the code. Please try again.");
       }
     } finally {
       setAiLoading(false);
     }
   };
 
-  const handleDelete = () => alert("Delete function coming soon!");
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      setIsDeleteModalOpen(false);
+      setLoading(true);
+      await SnippetAPI.delete(id!);
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Failed to delete snippet:", err);
+      setLoading(false);
+    }
+  };
 
   if (loading)
     return <div className="status-msg">Loading snippet vault...</div>;
@@ -348,18 +356,10 @@ const SnippetPage = () => {
           >
             Copy Code
           </button>
-          <button
-            className="btn"
-            onClick={() => alert("Added to favorites!")}
-            disabled={isEditing}
-          >
+          <button className="btn" onClick={() => {}} disabled={isEditing}>
             ♡ Add to Favorites
           </button>
-          <button
-            className="btn"
-            onClick={() => alert("Link copied to share!")}
-            disabled={isEditing}
-          >
+          <button className="btn" onClick={() => {}} disabled={isEditing}>
             ⇗ Share Snippet
           </button>
 
@@ -400,7 +400,7 @@ const SnippetPage = () => {
                   >
                     ✎ Edit Snippet
                   </button>
-                  <button className="btn-report" onClick={handleDelete}>
+                  <button className="btn-report" onClick={handleDeleteClick}>
                     Delete Snippet
                   </button>
                 </>
@@ -409,6 +409,17 @@ const SnippetPage = () => {
           )}
         </aside>
       </div>
+
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        title="Delete Snippet ⚠️"
+        message="Are you sure you want to delete this snippet? This action is permanent and cannot be undone."
+        confirmText="Yes, Delete"
+        cancelText="Cancel"
+        type="danger"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setIsDeleteModalOpen(false)}
+      />
     </div>
   );
 };
