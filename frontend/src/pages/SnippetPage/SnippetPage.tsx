@@ -87,8 +87,8 @@ const SnippetPage = () => {
         <aside className="glass-panel sidebar">
           <div className="meta-list">
             <div className="meta-row">
-              <span className="meta-icon">🛡</span> Created By: @
-              {snippet.userId || "user1"}
+              <span className="meta-icon">🛡</span> Created By:{" "}
+              {snippet.user?.username || "user1"}
             </div>
             <div className="meta-row">
               <span className="meta-icon">📋</span> Created On:{" "}

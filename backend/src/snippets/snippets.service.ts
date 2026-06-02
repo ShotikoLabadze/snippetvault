@@ -56,6 +56,13 @@ export class SnippetsService {
   async findOne(id: string): Promise<Snippet> {
     const snippet = await this.prisma.snippet.findUnique({
       where: { id },
+      include: {
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
     });
 
     if (!snippet) {
