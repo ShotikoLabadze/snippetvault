@@ -1,3 +1,18 @@
+import {
+  Calendar,
+  Check,
+  Code2,
+  Copy,
+  Heart,
+  Hourglass,
+  Loader2,
+  Pencil,
+  RefreshCw,
+  Share2,
+  Shield,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
 import Prism from "prismjs";
 import "prismjs/plugins/autoloader/prism-autoloader";
 import "prismjs/themes/prism-tomorrow.css";
@@ -12,12 +27,10 @@ import "./SnippetPage.css";
 const SnippetPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [snippet, setSnippet] = useState<any>(null);
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({
     title: "",
@@ -27,7 +40,6 @@ const SnippetPage = () => {
     tags: "",
   });
   const [saveLoading, setSaveLoading] = useState(false);
-
   const [explanation, setExplanation] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
   const [aiCooldown, setAiCooldown] = useState(0);
@@ -35,11 +47,9 @@ const SnippetPage = () => {
 
   useEffect(() => {
     if (aiCooldown <= 0) return;
-
     const timer = setInterval(() => {
       setAiCooldown((prev) => prev - 1);
     }, 1000);
-
     return () => clearInterval(timer);
   }, [aiCooldown]);
 
@@ -50,9 +60,7 @@ const SnippetPage = () => {
         SnippetAPI.getById(id!),
         api.get("/users/me").catch(() => ({ data: null })),
       ]);
-
       setSnippet(snippetData);
-
       setEditForm({
         title: snippetData.title || "",
         description: snippetData.description || "",
@@ -60,7 +68,6 @@ const SnippetPage = () => {
         code: snippetData.code || "",
         tags: snippetData.tags ? snippetData.tags.join(", ") : "",
       });
-
       if (userRes && userRes.data) {
         setCurrentUser(userRes.data);
       }
@@ -102,7 +109,6 @@ const SnippetPage = () => {
     const msPerHour = msPerMinute * 60;
     const msPerDay = msPerHour * 24;
     const elapsed = now.getTime() - past.getTime();
-
     if (elapsed < msPerMinute) return "Just now";
     if (elapsed < msPerHour) return Math.round(elapsed / msPerMinute) + "m ago";
     if (elapsed < msPerDay) return Math.round(elapsed / msPerHour) + "h ago";
@@ -115,7 +121,6 @@ const SnippetPage = () => {
 
   const handleSave = async () => {
     if (!editForm.title.trim() || !editForm.code.trim()) return;
-
     try {
       setSaveLoading(true);
       const updatedData = await SnippetAPI.update(id!, {
@@ -128,7 +133,6 @@ const SnippetPage = () => {
           .map((t) => t.trim())
           .filter(Boolean),
       });
-
       setSnippet(updatedData);
       setIsEditing(false);
     } catch (err) {
@@ -263,6 +267,7 @@ const SnippetPage = () => {
                   {(snippet.language || "javascript").toLowerCase()}
                 </span>
               </div>
+
               <p className="snippet-description">
                 {snippet.description ||
                   "No description provided for this snippet. You can add one by editing."}
@@ -280,7 +285,9 @@ const SnippetPage = () => {
 
               {(aiLoading || explanation) && (
                 <div className="ai-explanation-box">
-                  <h3 className="ai-explanation-title">✨ AI Code Analysis</h3>
+                  <h3 className="ai-explanation-title">
+                    <Sparkles size={18} /> AI Code Analysis
+                  </h3>
                   {aiLoading ? (
                     <div className="ai-loading-skeleton">
                       <div className="skeleton-line"></div>
@@ -300,23 +307,34 @@ const SnippetPage = () => {
         <aside className="glass-panel sidebar">
           <div className="meta-list">
             <div className="meta-row">
-              <span className="meta-icon">🛡</span> Created By:{" "}
-              {snippet.user?.username || "user1"}
+              <span className="meta-icon">
+                <Shield size={16} />
+              </span>{" "}
+              Created By: {snippet.user?.username || "user1"}
             </div>
             <div className="meta-row">
-              <span className="meta-icon">📋</span> Created On:{" "}
-              {new Date(snippet.createdAt).toLocaleDateString()}
+              <span className="meta-icon">
+                <Calendar size={16} />
+              </span>{" "}
+              Created On: {new Date(snippet.createdAt).toLocaleDateString()}
             </div>
             <div className="meta-row">
-              <span className="meta-icon">↻</span> Last Updated:{" "}
-              {formatTimeAgo(snippet.updatedAt)}
+              <span className="meta-icon">
+                <RefreshCw size={16} />
+              </span>{" "}
+              Last Updated: {formatTimeAgo(snippet.updatedAt)}
             </div>
             <div className="meta-row">
-              <span className="meta-icon">{"{}"}</span> Downloads:{" "}
-              {snippet.downloads || "0"}
+              <span className="meta-icon">
+                <Code2 size={16} />
+              </span>{" "}
+              Downloads: {snippet.downloads || "0"}
             </div>
             <div className="meta-row">
-              <span className="meta-icon">♥</span> Likes: {snippet.likes || "0"}
+              <span className="meta-icon">
+                <Heart size={16} />
+              </span>{" "}
+              Likes: {snippet.likes || "0"}
             </div>
           </div>
 
@@ -341,11 +359,19 @@ const SnippetPage = () => {
               onClick={handleExplainCode}
               disabled={aiLoading || aiCooldown > 0}
             >
-              {aiLoading
-                ? "✨ Analyzing..."
-                : aiCooldown > 0
-                  ? `⏳ Wait ${aiCooldown}s`
-                  : "✨ Explain with AI"}
+              {aiLoading ? (
+                <>
+                  <Loader2 size={16} className="spin" /> Analyzing...
+                </>
+              ) : aiCooldown > 0 ? (
+                <>
+                  <Hourglass size={16} /> Wait {aiCooldown}s
+                </>
+              ) : (
+                <>
+                  <Sparkles size={16} /> Explain with AI
+                </>
+              )}
             </button>
           )}
 
@@ -354,13 +380,15 @@ const SnippetPage = () => {
             onClick={handleCopy}
             disabled={isEditing}
           >
-            Copy Code
+            <Copy size={16} /> Copy Code
           </button>
+
           <button className="btn" onClick={() => {}} disabled={isEditing}>
-            ♡ Add to Favorites
+            <Heart size={16} /> Add to Favorites
           </button>
+
           <button className="btn" onClick={() => {}} disabled={isEditing}>
-            ⇗ Share Snippet
+            <Share2 size={16} /> Share Snippet
           </button>
 
           {isOwner && (
@@ -373,7 +401,15 @@ const SnippetPage = () => {
                     onClick={handleSave}
                     disabled={saveLoading}
                   >
-                    {saveLoading ? "Saving..." : "✓ Save Changes"}
+                    {saveLoading ? (
+                      <>
+                        <Loader2 size={16} className="spin" /> Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Check size={16} /> Save Changes
+                      </>
+                    )}
                   </button>
                   <button
                     className="btn profile-btn-cancel"
@@ -398,10 +434,10 @@ const SnippetPage = () => {
                     className="btn btn-edit-snippet"
                     onClick={() => setIsEditing(true)}
                   >
-                    ✎ Edit Snippet
+                    <Pencil size={16} /> Edit Snippet
                   </button>
                   <button className="btn-report" onClick={handleDeleteClick}>
-                    Delete Snippet
+                    <Trash2 size={16} /> Delete Snippet
                   </button>
                 </>
               )}
@@ -412,7 +448,7 @@ const SnippetPage = () => {
 
       <ConfirmModal
         isOpen={isDeleteModalOpen}
-        title="Delete Snippet ⚠️"
+        title="Delete Snippet"
         message="Are you sure you want to delete this snippet? This action is permanent and cannot be undone."
         confirmText="Yes, Delete"
         cancelText="Cancel"

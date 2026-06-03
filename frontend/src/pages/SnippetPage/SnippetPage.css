@@ -319,3 +319,30 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.meta-icon svg {
+  display: block;
+}
+
+.btn-report {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ai-explanation-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
