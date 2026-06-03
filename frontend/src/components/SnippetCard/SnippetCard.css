@@ -103,10 +103,29 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-.btn-turn-card,
+.btn-turn-card {
+  cursor: pointer;
+  padding: 6px 10px;
+  background: rgba(255, 74, 118, 0.06);
+  color: #ff4a76;
+  border: 1px solid rgba(255, 74, 118, 0.2);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-turn-card:hover {
+  background: rgba(255, 74, 118, 0.12);
+  border-color: #ff4a76;
+}
+
 .btn-back {
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 6px 10px;
   background: rgba(255, 255, 255, 0.04);
   color: var(--text-muted);
   border: 1px solid var(--border-card);
@@ -114,9 +133,11 @@
   font-size: 11px;
   font-weight: 500;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.btn-turn-card:hover,
 .btn-back:hover {
   background: rgba(255, 255, 255, 0.08);
   color: var(--text-main);
@@ -135,6 +156,10 @@
   font-weight: 500;
   transition: all 0.2s ease;
   margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .btn-navigate-page:hover {
@@ -153,23 +178,4 @@
   border-radius: 8px;
   border: 1px solid var(--border-card);
   box-sizing: border-box;
-}
-
-.btn-explore {
-  padding: 8px 24px;
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(4px);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-explore:hover {
-  background: var(--btn-primary);
-  border-color: var(--btn-primary);
 }

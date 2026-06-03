@@ -1,3 +1,4 @@
+import { ExternalLink, RotateCw } from "lucide-react";
 import Prism from "prismjs";
 import "prismjs/plugins/autoloader/prism-autoloader";
 import "prismjs/themes/prism-tomorrow.css";
@@ -75,7 +76,6 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
 
   const langClass = getPrismLanguageClass(snippet.language);
   const langKey = (snippet.language || "").toLowerCase().trim();
-
   const hasPhoto = Boolean(snippet.imageUrl);
 
   return (
@@ -89,22 +89,24 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
                 className="btn-turn-card"
                 onClick={() => setIsFlipped(true)}
               >
-                ↻ Turn Card
+                <RotateCw size={12} /> Turn Card
               </button>
             </div>
-            <div className="preview-container">
-              <button
-                className="btn-explore"
-                onClick={() => navigate(`/snippets/${snippet.id}`)}
-              >
-                EXPLORE
-              </button>
-            </div>
+            <div
+              className="preview-container"
+              style={{
+                backgroundImage: `url(${snippet.imageUrl})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                position: "relative",
+              }}
+            />
             <button
               className="btn-navigate-page"
               onClick={() => navigate(`/snippets/${snippet.id}`)}
             >
-              Move to Snippet Page →
+              <span>Move to Snippet Page</span>
+              <ExternalLink size={14} />
             </button>
           </>
         ) : (
@@ -114,7 +116,7 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
                 {snippet.language}
               </span>
               <button className="btn-back" onClick={() => setIsFlipped(false)}>
-                ↻ Back
+                <RotateCw size={12} /> Back
               </button>
             </div>
             <pre className={`${langClass} code-display`}>
@@ -124,7 +126,8 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
               className="btn-navigate-page"
               onClick={() => navigate(`/snippets/${snippet.id}`)}
             >
-              Move to Snippet Page →
+              <span>Move to Snippet Page</span>
+              <ExternalLink size={14} />
             </button>
           </>
         )
@@ -143,7 +146,8 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
             className="btn-navigate-page"
             onClick={() => navigate(`/snippets/${snippet.id}`)}
           >
-            Move to Snippet Page →
+            <span>Move to Snippet Page</span>
+            <ExternalLink size={14} />
           </button>
         </>
       )}
