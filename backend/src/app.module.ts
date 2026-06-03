@@ -26,6 +26,10 @@ import { UsersModule } from './users/users.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         uri: configService.get<string>('MONGO_URI'),
+
+        maxPoolSize: 10,
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 45000,
       }),
     }),
 
