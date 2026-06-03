@@ -10,6 +10,7 @@ interface Snippet {
   title: string;
   language: string;
   code: string;
+  imageUrl?: string;
 }
 
 const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
@@ -74,7 +75,8 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
 
   const langClass = getPrismLanguageClass(snippet.language);
   const langKey = (snippet.language || "").toLowerCase().trim();
-  const hasPhoto = snippet.title === "Modern Neon Button";
+
+  const hasPhoto = Boolean(snippet.imageUrl);
 
   return (
     <div className="snippet-wrapper">
@@ -91,7 +93,12 @@ const SnippetCard = ({ snippet }: { snippet: Snippet }) => {
               </button>
             </div>
             <div className="preview-container">
-              <button className="btn-explore">EXPLORE</button>
+              <button
+                className="btn-explore"
+                onClick={() => navigate(`/snippets/${snippet.id}`)}
+              >
+                EXPLORE
+              </button>
             </div>
             <button
               className="btn-navigate-page"

@@ -8,7 +8,7 @@ import {
 import "./App.css";
 import CreateSnippetModal from "./components/CreateModal/CreateSnippetModal";
 import RootLayout from "./Layouts/RootLayout";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import Login from "./pages/Login";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import Register from "./pages/Register";

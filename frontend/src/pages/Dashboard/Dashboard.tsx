@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { SnippetAPI } from "../api/snippets";
-import CreateSnippetModal from "../components/CreateModal/CreateSnippetModal";
-import SnippetCard from "../components/SnippetCard/SnippetCard";
+import { SnippetAPI } from "../../api/snippets";
+import CreateSnippetModal from "../../components/CreateModal/CreateSnippetModal";
+import SnippetCard from "../../components/SnippetCard/SnippetCard";
+import "./Dashboard.css";
 
 interface DashboardProps {
   searchQuery: string;

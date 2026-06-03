@@ -1,0 +1,59 @@
+.dashboard-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 32px clamp(16px, 4vw, 48px);
+  background-color: var(--bg-main);
+}
+
+.dashboard-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0 0 24px;
+  letter-spacing: -0.3px;
+}
+
+.masonry-grid {
+  column-count: 1;
+  column-gap: 24px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .masonry-grid {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1200px) {
+  .masonry-grid {
+    column-count: 3;
+  }
+}
+
+.masonry-item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.empty-vault-msg {
+  color: var(--text-muted);
+  font-size: 15px;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.status-msg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  color: var(--text-muted);
+  font-size: 16px;
+}
