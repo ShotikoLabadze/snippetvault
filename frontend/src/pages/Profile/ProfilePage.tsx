@@ -1,3 +1,13 @@
+import {
+  Code2,
+  Eye,
+  FilePlus,
+  LogOut,
+  Plus,
+  RefreshCw,
+  Settings,
+  Tag,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthAPI } from "../../api/auth";
@@ -18,11 +28,9 @@ const ProfilePage = () => {
   const [mySnippets, setMySnippets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [isEditing, setIsEditing] = useState(false);
   const [editUsername, setEditUsername] = useState("");
   const [saveLoading, setSaveLoading] = useState(false);
-
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [passwordForm, setPasswordForm] = useState({
     oldPassword: "",
@@ -35,17 +43,13 @@ const ProfilePage = () => {
   const fetchProfileAndSnippets = async () => {
     try {
       setLoading(true);
-
       const userData = await AuthAPI.getMe();
       setProfile(userData);
       setEditUsername(userData.username);
-
       const allSnippets = await SnippetAPI.getAll();
-
       const userSnippets = allSnippets.filter(
         (snippet: any) => snippet.userId === userData.id,
       );
-
       setMySnippets(userSnippets);
     } catch (err) {
       console.error("Failed to load profile data:", err);
@@ -60,7 +64,6 @@ const ProfilePage = () => {
 
   const handleSaveProfile = async () => {
     if (!editUsername.trim()) return alert("Username cannot be empty");
-
     try {
       setSaveLoading(true);
       const updatedUser = await AuthAPI.login({ username: editUsername });
@@ -77,7 +80,6 @@ const ProfilePage = () => {
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
     setPasswordError("");
-
     if (!passwordForm.oldPassword || !passwordForm.newPassword) {
       setPasswordError("All fields are required");
       return;
@@ -90,15 +92,13 @@ const ProfilePage = () => {
       setPasswordError("New passwords do not match");
       return;
     }
-
     try {
       setPasswordLoading(true);
       await AuthAPI.register({
         oldPassword: passwordForm.oldPassword,
         newPassword: passwordForm.newPassword,
       });
-
-      alert("Password updated successfully! 🎉");
+      alert("Password updated successfully!");
       setIsChangingPassword(false);
       setPasswordForm({
         oldPassword: "",
@@ -145,7 +145,6 @@ const ProfilePage = () => {
     const msPerHour = msPerMinute * 60;
     const msPerDay = msPerHour * 24;
     const elapsed = now.getTime() - past.getTime();
-
     if (elapsed < msPerMinute) return "Just now";
     if (elapsed < msPerHour) return Math.round(elapsed / msPerMinute) + "m ago";
     if (elapsed < msPerDay) return Math.round(elapsed / msPerHour) + "h ago";
@@ -164,17 +163,14 @@ const ProfilePage = () => {
         });
       }
     });
-
     let topTag = "none";
     let maxCount = 0;
-
     Object.entries(tagCounts).forEach(([tag, count]) => {
       if (count > maxCount) {
         maxCount = count;
         topTag = tag.startsWith("#") ? tag : `#${tag}`;
       }
     });
-
     return topTag;
   };
 
@@ -215,7 +211,6 @@ const ProfilePage = () => {
               ) : (
                 <h1 className="profile-username">{profile?.username}</h1>
               )}
-
               <p className="profile-fullname">John D.</p>
               <p className="profile-bio">Software Engineer & Code Hoarder</p>
               <p className="profile-joined">
@@ -223,7 +218,6 @@ const ProfilePage = () => {
               </p>
             </div>
           </div>
-
           <div className="profile-actions">
             {isEditing ? (
               <>
@@ -265,7 +259,7 @@ const ProfilePage = () => {
                   className="profile-btn btn-profile-logout"
                   onClick={handleLogout}
                 >
-                  Logout 🚪
+                  Logout <LogOut size={14} className="btn-icon" />
                 </button>
               </>
             )}
@@ -315,11 +309,9 @@ const ProfilePage = () => {
                   })
                 }
               />
-
               {passwordError && (
                 <p className="password-error-message">{passwordError}</p>
               )}
-
               <div className="password-form-actions">
                 <button
                   type="submit"
@@ -342,31 +334,36 @@ const ProfilePage = () => {
 
         <section className="profile-stats-row">
           <div className="stat-card glass-panel">
-            <span className="stat-icon">{"</>"}</span>
+            <span className="stat-icon">
+              <Code2 size={20} />
+            </span>
             <div className="stat-info">
               <span className="stat-label">Total Snippets</span>
               <span className="stat-value">{mySnippets.length}</span>
             </div>
           </div>
-
           <div className="stat-card glass-panel">
-            <span className="stat-icon">👁</span>
+            <span className="stat-icon">
+              <Eye size={20} />
+            </span>
             <div className="stat-info">
               <span className="stat-label">Total Views</span>
               <span className="stat-value">{totalViewsCount}</span>
             </div>
           </div>
-
           <div className="stat-card glass-panel">
-            <span className="stat-icon">⚙️</span>
+            <span className="stat-icon">
+              <Settings size={20} />
+            </span>
             <div className="stat-info">
               <span className="stat-label">Used Languages</span>
               <span className="stat-value">{uniqueLanguagesCount}</span>
             </div>
           </div>
-
           <div className="stat-card glass-panel">
-            <span className="stat-icon">🏷</span>
+            <span className="stat-icon">
+              <Tag size={20} />
+            </span>
             <div className="stat-info">
               <span className="stat-label">Top Tag</span>
               <span className="stat-value stat-value-tag">{getTopTag()}</span>
@@ -384,10 +381,9 @@ const ProfilePage = () => {
                 className="btn-new-snippet new-snippet-profile-btn"
                 onClick={() => setIsModalOpen(true)}
               >
-                + New Snippet
+                <Plus size={14} className="btn-icon" /> New Snippet
               </button>
             </div>
-
             {mySnippets.length === 0 ? (
               <p className="empty-vault">
                 Your vault is empty. Create your first snippet!
@@ -416,7 +412,11 @@ const ProfilePage = () => {
                   return (
                     <div key={snippet.id} className="activity-item">
                       <span className="activity-icon">
-                        {isUpdated ? "🔄" : "📝"}
+                        {isUpdated ? (
+                          <RefreshCw size={14} />
+                        ) : (
+                          <FilePlus size={14} />
+                        )}
                       </span>
                       <div className="activity-content">
                         <p className="activity-text">

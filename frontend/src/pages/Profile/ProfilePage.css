@@ -465,3 +465,26 @@
     width: 100%;
   }
 }
+.stat-icon svg,
+.activity-icon svg {
+  display: block;
+}
+
+.btn-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+.new-snippet-profile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-profile-logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
