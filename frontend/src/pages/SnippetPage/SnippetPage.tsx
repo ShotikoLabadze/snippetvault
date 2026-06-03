@@ -87,7 +87,10 @@ const SnippetPage = () => {
     if (snippet && Prism.plugins.autoloader && !isEditing) {
       Prism.plugins.autoloader.languages_path =
         "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/";
-      Prism.highlightAll();
+
+      setTimeout(() => {
+        Prism.highlightAll();
+      }, 0);
     }
   }, [snippet, isEditing]);
 

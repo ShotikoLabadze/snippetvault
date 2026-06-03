@@ -76,14 +76,25 @@ export class SnippetsService {
     id: string,
     updateSnippetDto: UpdateSnippetDto,
   ): Promise<Snippet> {
-    try {
-      return await this.prisma.snippet.update({
-        where: { id },
-        data: updateSnippetDto,
-      });
-    } catch (error) {
+    const existingSnippet = await this.prisma.snippet.findUnique({
+      where: { id },
+    });
+
+    if (!existingSnippet) {
       throw new NotFoundException(`Snippet with ID ${id} not found`);
     }
+
+    return this.prisma.snippet.update({
+      where: { id },
+      data: {
+        title: updateSnippetDto.title ?? undefined,
+        code: updateSnippetDto.code ?? undefined,
+        language: updateSnippetDto.language ?? undefined,
+
+        imageUrl: updateSnippetDto.imageUrl ?? undefined,
+        tags: updateSnippetDto.tags ? updateSnippetDto.tags || [] : undefined,
+      },
+    });
   }
 
   async delete(id: string) {
