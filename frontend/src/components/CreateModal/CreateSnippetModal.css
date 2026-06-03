@@ -66,7 +66,7 @@
 .modal-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-main);
   margin: 0;
   display: flex;
   align-items: center;
@@ -75,17 +75,13 @@
 }
 
 .title-plus {
-  color: #4e65f3;
-  font-weight: 500;
-  font-size: 1.7rem;
-  text-shadow: none;
+  color: var(--btn-primary);
 }
 
 .modal-close {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 1.6rem;
   cursor: pointer;
   width: 32px;
   height: 32px;
@@ -122,7 +118,7 @@
 
 .btn-ai-smartfill {
   background: rgba(78, 101, 243, 0.1);
-  color: #4e65f3;
+  color: var(--btn-primary);
   border: 1px solid rgba(78, 101, 243, 0.3);
   padding: 6px 14px;
   border-radius: 6px;
@@ -131,14 +127,16 @@
   cursor: pointer;
   letter-spacing: 0.3px;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .btn-ai-smartfill:hover:not(:disabled) {
-  background: #4e65f3;
+  background: var(--btn-primary);
   color: #ffffff;
-  border-color: #4e65f3;
+  border-color: var(--btn-primary);
   transform: translateY(-1px);
-  box-shadow: none;
 }
 
 .btn-ai-smartfill:disabled {
@@ -147,14 +145,12 @@
   background: rgba(255, 255, 255, 0.05);
   border-color: var(--border-card);
   color: var(--text-muted);
-  box-shadow: none;
 }
 
 .btn-ai-smartfill.cooldown-active {
   color: #ffb703;
   border-color: rgba(255, 183, 3, 0.4);
   background: rgba(255, 183, 3, 0.05);
-  box-shadow: none;
   cursor: not-allowed;
 }
 
@@ -169,9 +165,7 @@
 }
 
 .label-icon {
-  color: #4e65f3;
-  font-size: 0.95rem;
-  opacity: 0.9;
+  color: var(--btn-primary);
 }
 
 .form-input,
@@ -182,17 +176,18 @@
   background: var(--bg-input);
   border: 1px solid var(--border-card);
   border-radius: 8px;
-  color: #ffffff;
+  color: var(--text-main);
   font-size: 0.95rem;
   font-family: inherit;
   outline: none;
   transition: all 0.2s ease;
-  box-shadow: none;
+  box-sizing: border-box;
 }
 
 .form-input::placeholder,
 .form-textarea::placeholder {
-  color: rgba(168, 216, 232, 0.3);
+  color: var(--text-muted);
+  opacity: 0.6;
 }
 
 .form-input:focus,
@@ -219,8 +214,8 @@
 }
 
 .form-select option {
-  background: #0f172a;
-  color: #ffffff;
+  background: var(--bg-surface);
+  color: var(--text-main);
 }
 
 .form-row {
@@ -255,8 +250,7 @@
   border-top: 1px solid var(--border-card);
 }
 
-.btn-submit,
-.btn-cancel {
+.btn-submit {
   padding: 12px 28px;
   border-radius: 8px;
   font-size: 0.95rem;
@@ -266,13 +260,13 @@
   letter-spacing: 0.5px;
   transition: all 0.2s ease;
   min-width: 140px;
-}
-
-.btn-submit {
   background: var(--btn-primary);
   color: #ffffff;
   border: none;
-  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .btn-submit:hover:not(:disabled) {
@@ -286,6 +280,15 @@
 }
 
 .btn-cancel {
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  min-width: 140px;
   background: transparent;
   color: var(--text-muted);
   border: 1px solid var(--border-card);
@@ -295,7 +298,6 @@
   background: rgba(255, 255, 255, 0.05);
   border-color: var(--text-muted);
   color: var(--text-main);
-  box-shadow: none;
 }
 
 .modal-content::-webkit-scrollbar,
@@ -318,6 +320,16 @@
 .modal-content::-webkit-scrollbar-thumb:hover,
 .form-textarea::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 640px) {

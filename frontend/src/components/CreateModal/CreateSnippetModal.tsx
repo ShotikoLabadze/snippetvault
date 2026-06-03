@@ -1,3 +1,16 @@
+import {
+  Code2,
+  FileText,
+  Hourglass,
+  Image,
+  Loader2,
+  Plus,
+  Sparkles,
+  Tag,
+  Terminal,
+  Type,
+  X,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { SnippetAPI } from "../../api/snippets";
@@ -57,10 +70,7 @@ const CreateSnippetModal = ({
   };
 
   const handleSmartFill = async () => {
-    if (!code.trim()) {
-      alert("Please paste some code first!");
-      return;
-    }
+    if (!code.trim()) return;
 
     try {
       setAiLoading(true);
@@ -79,12 +89,8 @@ const CreateSnippetModal = ({
       setAiCooldown(60);
     } catch (err: any) {
       console.error("AI Smart Fill failed:", err);
-
       if (err.response?.status === 429) {
-        alert("Too many requests! Please wait a moment.");
         setAiCooldown(60);
-      } else {
-        alert("AI was unable to process the code. Please try again.");
       }
     } finally {
       setAiLoading(false);
@@ -120,10 +126,10 @@ const CreateSnippetModal = ({
       <div className="modal-content" role="dialog" aria-modal="true">
         <div className="modal-header">
           <h2 className="modal-title">
-            <span className="title-plus">+</span> New Snippet
+            <Plus size={22} className="title-plus" /> New Snippet
           </h2>
           <button className="modal-close" onClick={onClose} aria-label="Close">
-            ×
+            <X size={18} />
           </button>
         </div>
 
@@ -132,7 +138,7 @@ const CreateSnippetModal = ({
             <div className="form-group code-group">
               <div className="code-label-wrapper">
                 <label className="form-label">
-                  <span className="label-icon">{`</>`}</span> Code
+                  <Code2 size={16} className="label-icon" /> Code
                 </label>
 
                 <button
@@ -141,11 +147,19 @@ const CreateSnippetModal = ({
                   onClick={handleSmartFill}
                   disabled={aiLoading || aiCooldown > 0}
                 >
-                  {aiLoading
-                    ? "✨ Analyzing..."
-                    : aiCooldown > 0
-                      ? `⏳ Wait ${aiCooldown}s`
-                      : "✨ AI Smart Fill"}
+                  {aiLoading ? (
+                    <>
+                      <Loader2 size={12} className="spin" /> Analyzing...
+                    </>
+                  ) : aiCooldown > 0 ? (
+                    <>
+                      <Hourglass size={12} /> Wait {aiCooldown}s
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles size={12} /> AI Smart Fill
+                    </>
+                  )}
                 </button>
               </div>
               <textarea
@@ -159,7 +173,7 @@ const CreateSnippetModal = ({
 
             <div className="form-group lang-group">
               <label className="form-label">
-                <span className="label-icon">⌘</span> Language
+                <Terminal size={16} className="label-icon" /> Language
               </label>
               <select
                 className="form-select"
@@ -178,7 +192,7 @@ const CreateSnippetModal = ({
 
           <div className="form-group">
             <label className="form-label">
-              <span className="label-icon">🛡</span> Title
+              <Type size={16} className="label-icon" /> Title
             </label>
             <input
               className="form-input"
@@ -192,7 +206,7 @@ const CreateSnippetModal = ({
 
           <div className="form-group">
             <label className="form-label">
-              <span className="label-icon">🖼</span> Image URL
+              <Image size={16} className="label-icon" /> Image URL
             </label>
             <input
               className="form-input"
@@ -205,7 +219,7 @@ const CreateSnippetModal = ({
 
           <div className="form-group">
             <label className="form-label">
-              <span className="label-icon">✎</span> Description
+              <FileText size={16} className="label-icon" /> Description
             </label>
             <textarea
               className="form-textarea"
@@ -218,7 +232,7 @@ const CreateSnippetModal = ({
 
           <div className="form-group">
             <label className="form-label">
-              <span className="label-icon">🏷</span> Tags
+              <Tag size={16} className="label-icon" /> Tags
             </label>
             <input
               className="form-input tags-input"
@@ -235,7 +249,13 @@ const CreateSnippetModal = ({
               className="btn-submit"
               disabled={loading || aiLoading}
             >
-              {loading ? "Saving..." : "Save Snippet"}
+              {loading ? (
+                <>
+                  <Loader2 size={16} className="spin" /> Saving...
+                </>
+              ) : (
+                "Save Snippet"
+              )}
             </button>
             <button type="button" className="btn-cancel" onClick={onClose}>
               Cancel
