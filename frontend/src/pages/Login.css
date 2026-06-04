@@ -19,7 +19,7 @@
   border-radius: 14px;
   border: 1px solid var(--border-card);
   background: var(--bg-surface);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--auth-card-shadow);
 }
 
 .auth-brand {
@@ -46,11 +46,11 @@
   margin: 0;
   font-size: 26px;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-white);
 }
 
 .auth-brand-name span {
-  color: #4e65f3;
+  color: var(--btn-primary);
 }
 
 .auth-divider {
@@ -64,7 +64,7 @@
   text-align: center;
   font-size: 30px;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-white);
 }
 
 .auth-subtitle {
@@ -99,23 +99,23 @@
   background: var(--bg-input);
   border: 1px solid var(--border-card);
   border-radius: 8px;
-  color: #fff;
+  color: var(--color-white);
   padding: 14px 16px;
   font-size: 15px;
   outline: none;
   transition:
-    box-shadow 0.2s,
-    border-color 0.2s;
+    box-shadow var(--transition-smooth),
+    border-color var(--transition-smooth);
   box-sizing: border-box;
 }
 
 .auth-input::placeholder {
-  color: rgba(168, 216, 232, 0.3);
+  color: var(--auth-placeholder-color);
 }
 
 .auth-input:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(78, 101, 243, 0.12);
+  box-shadow: var(--input-focus-shadow);
 }
 
 .auth-toggle-password {
@@ -123,7 +123,7 @@
   right: 14px;
   top: 50%;
   transform: translateY(-50%);
-  background: transparent;
+  background: var(--color-transparent);
   border: 0;
   color: var(--text-muted);
   cursor: pointer;
@@ -147,15 +147,15 @@
 }
 
 .auth-remember-me input {
-  accent-color: #4e65f3;
+  accent-color: var(--btn-primary);
 }
 
 .auth-link {
-  color: #4e65f3;
+  color: var(--btn-primary);
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
-  transition: color 0.2s;
+  transition: color var(--transition-smooth);
 }
 
 .auth-link:hover {
@@ -169,13 +169,13 @@
   border: 0;
   border-radius: 8px;
   background: var(--btn-primary);
-  color: #ffffff;
+  color: var(--color-white);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition:
-    transform 0.05s,
-    background-color 0.2s;
+    transform var(--transition-click),
+    background-color var(--transition-smooth);
 }
 
 .auth-submit-btn:hover {

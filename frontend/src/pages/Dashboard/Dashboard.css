@@ -9,13 +9,13 @@
   font-size: 26px;
   font-weight: 600;
   color: var(--text-main);
-  margin: 0 0 24px;
+  margin: 0 0 var(--grid-gap);
   letter-spacing: -0.3px;
 }
 
 .masonry-grid {
   column-count: 1;
-  column-gap: 24px;
+  column-gap: var(--grid-gap);
   width: 100%;
   padding: 0;
   margin: 0;
@@ -39,7 +39,7 @@
   page-break-inside: avoid;
   display: inline-block;
   width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: var(--grid-gap);
 }
 
 .empty-vault-msg {

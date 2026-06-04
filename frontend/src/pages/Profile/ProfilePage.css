@@ -10,7 +10,7 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--grid-gap);
   padding: 32px 0;
 }
 
@@ -28,13 +28,13 @@
   outline: none;
   font-family: inherit;
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color var(--transition-smooth) ease,
+    box-shadow var(--transition-smooth) ease;
 }
 
 .profile-username-input:focus {
   border-color: var(--border-focus) !important;
-  box-shadow: 0 0 0 2px rgba(78, 101, 243, 0.2);
+  box-shadow: var(--username-focus-shadow) !important;
 }
 
 .hero-edit-input {
@@ -46,7 +46,7 @@
   background: var(--bg-surface) !important;
   border: 1px solid var(--border-card) !important;
   border-radius: 14px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: var(--profile-card-shadow) !important;
 }
 
 .password-card-title {
@@ -73,7 +73,7 @@
 }
 
 .password-error-message {
-  color: #ff4a76;
+  color: var(--btn-accent-color);
   font-size: 12px;
   margin: 0;
 }
@@ -86,7 +86,7 @@
 
 .btn-profile-save {
   background: var(--btn-primary) !important;
-  color: #ffffff !important;
+  color: var(--color-white) !important;
   border-color: var(--btn-primary) !important;
 }
 
@@ -116,7 +116,7 @@
   background: var(--bg-surface) !important;
   border: 1px solid var(--border-card) !important;
   border-radius: 14px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: var(--profile-card-shadow) !important;
 }
 
 .profile-hero-card {
@@ -132,7 +132,7 @@
 .profile-hero-left {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--grid-gap);
 }
 
 .profile-avatar {
@@ -182,7 +182,7 @@
 
 .profile-btn {
   padding: 10px 22px;
-  background: transparent;
+  background: var(--color-transparent);
   color: var(--text-main);
   border: 1px solid var(--border-card) !important;
   border-radius: 8px;
@@ -190,24 +190,24 @@
   font-weight: 500;
   text-transform: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-smooth) ease;
   box-shadow: none !important;
 }
 
 .profile-btn:hover {
-  background: rgba(255, 255, 255, 0.05) !important;
+  background: var(--white-alpha-05) !important;
   border-color: var(--text-muted) !important;
   color: var(--text-main) !important;
 }
 
 .btn-profile-logout {
-  color: #ff4a76 !important;
-  border-color: rgba(255, 74, 118, 0.2) !important;
+  color: var(--btn-accent-color) !important;
+  border-color: var(--btn-accent-border) !important;
 }
 
 .btn-profile-logout:hover {
-  background: rgba(255, 74, 118, 0.08) !important;
-  border-color: #ff4a76 !important;
+  background: var(--logout-bg-hover) !important;
+  border-color: var(--btn-accent-color) !important;
   box-shadow: none !important;
 }
 
@@ -223,8 +223,8 @@
   align-items: center;
   gap: 14px;
   transition:
-    transform 0.2s ease,
-    border-color 0.2s ease;
+    transform var(--transition-smooth) ease,
+    border-color var(--transition-smooth) ease;
 }
 
 .stat-card:hover {
@@ -239,10 +239,10 @@
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  background: rgba(78, 101, 243, 0.08) !important;
-  border: 1px solid rgba(78, 101, 243, 0.15) !important;
+  background: var(--stat-icon-bg) !important;
+  border: 1px solid var(--stat-icon-border) !important;
   font-size: 18px;
-  color: #4e65f3 !important;
+  color: var(--btn-primary) !important;
   text-shadow: none !important;
 }
 
@@ -267,14 +267,14 @@
 }
 
 .stat-value-tag {
-  color: #c77dff !important;
+  color: var(--stat-tag-color) !important;
   text-shadow: none !important;
 }
 
 .profile-bottom-section {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 24px;
+  gap: var(--grid-gap);
 }
 
 .profile-snippets-grid-wrapper,
@@ -347,7 +347,7 @@
   background: var(--bg-input) !important;
   border: 1px solid var(--border-card) !important;
   border-radius: 10px;
-  transition: border-color 0.2s;
+  transition: border-color var(--transition-smooth);
 }
 
 .activity-item:hover {
@@ -366,12 +366,12 @@
 }
 
 .activity-icon-sync {
-  background: rgba(78, 101, 243, 0.1) !important;
-  color: #4e65f3 !important;
+  background: var(--activity-sync-bg) !important;
+  color: var(--btn-primary) !important;
 }
 
 .activity-icon-create {
-  background: rgba(255, 255, 255, 0.05) !important;
+  background: var(--white-alpha-05) !important;
   color: var(--text-main) !important;
 }
 
@@ -389,7 +389,7 @@
 }
 
 .activity-text strong {
-  color: #4e65f3 !important;
+  color: var(--btn-primary) !important;
   font-weight: 500;
 }
 
@@ -465,6 +465,7 @@
     width: 100%;
   }
 }
+
 .stat-icon svg,
 .activity-icon svg {
   display: block;

@@ -6,11 +6,72 @@
   --border-focus: #4e65f3;
   --text-main: #ffffff;
   --text-muted: #8b97b1;
+  --code-block-bg: #0f1420;
+
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+
   --btn-primary: #4e65f3;
   --btn-primary-hover: #3d52d9;
+
   --badge-bg: #273147;
   --badge-text: #a4b3d6;
-  --code-block-bg: #0f1420;
+
+  --card-hover-border: rgba(78, 101, 243, 0.4);
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.25);
+
+  --btn-accent-color: #ff4a76;
+  --btn-accent-bg: rgba(255, 74, 118, 0.06);
+  --btn-accent-bg-hover: rgba(255, 74, 118, 0.12);
+  --btn-accent-border: rgba(255, 74, 118, 0.2);
+
+  --danger-color-hover: #ff3362;
+  --danger-shadow-hover: 0 0 12px rgba(255, 74, 118, 0.3);
+  --danger-modal-border: rgba(255, 74, 118, 0.4);
+
+  --btn-secondary-bg: rgba(255, 255, 255, 0.04);
+  --btn-secondary-bg-hover: rgba(255, 255, 255, 0.08);
+  --btn-secondary-border-hover: var(--text-muted);
+
+  --code-border: rgba(255, 255, 255, 0.03);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.1);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.2);
+
+  --transition-click: 0.05s;
+  --transition-fast: 0.1s;
+  --transition-normal: 0.15s;
+  --transition-smooth: 0.2s;
+  --transition-bounce: 0.25s;
+  --transition-slow: 0.3s;
+
+  --overlay-bg: rgba(8, 13, 24, 0.75);
+  --modal-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+  --input-focus-shadow: 0 0 0 3px rgba(78, 101, 243, 0.12);
+  --custom-overlay-bg: rgba(5, 8, 15, 0.75);
+  --custom-modal-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+  --white-alpha-05: rgba(255, 255, 255, 0.05);
+  --black-alpha-20: rgba(0, 0, 0, 0.2);
+
+  --auth-card-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  --auth-placeholder-color: rgba(168, 216, 232, 0.3);
+
+  --ai-smartfill-bg: rgba(78, 101, 243, 0.1);
+  --ai-smartfill-border: rgba(78, 101, 243, 0.3);
+  --cooldown-color: #ffb703;
+  --cooldown-border: rgba(255, 183, 3, 0.4);
+  --cooldown-bg: rgba(255, 183, 3, 0.05);
+
+  --grid-gap: 24px;
+
+  --profile-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  --username-focus-shadow: 0 0 0 2px rgba(78, 101, 243, 0.2);
+  --stat-icon-bg: rgba(78, 101, 243, 0.08);
+  --stat-icon-border: rgba(78, 101, 243, 0.15);
+  --stat-tag-color: #c77dff;
+  --activity-sync-bg: rgba(78, 101, 243, 0.1);
+  --logout-bg-hover: rgba(255, 74, 118, 0.08);
 }
 
 body {
@@ -19,3 +80,87 @@ body {
   margin: 0;
   font-family: "Inter", sans-serif;
 }
+/* :root {
+  --bg-main: #f4f1ea;
+  --bg-surface: #ffffff;
+  --bg-input: #efece6;
+  --border-card: #d1c9bc;
+  --border-focus: #084f54;
+  --text-main: #111111;
+  --text-muted: #555d61;
+
+  --code-block-bg: #f8f6f2;
+  --code-border: #d1c9bc;
+
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+
+  --btn-primary: #084f54;
+  --btn-primary-hover: #053337;
+
+  --badge-bg: #efece6;
+  --badge-text: #222222;
+
+  --card-hover-border: #084f54;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --card-shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+  --btn-accent-color: #a81c1c;
+  --btn-accent-bg: #fdf2f2;
+  --btn-accent-bg-hover: #fde8e8;
+  --btn-accent-border: #e5a9a9;
+
+  --danger-color-hover: #821010;
+  --danger-shadow-hover: 0 2px 8px rgba(168, 28, 28, 0.15);
+  --danger-modal-border: #a81c1c;
+
+  --btn-secondary-bg: #ffffff;
+  --btn-secondary-bg-hover: #efece6;
+  --btn-secondary-border-hover: #555d61;
+
+  --scrollbar-thumb: #c2b9ac;
+  --scrollbar-thumb-hover: #a39889;
+
+  --transition-click: 0.05s;
+  --transition-fast: 0.1s;
+  --transition-normal: 0.15s;
+  --transition-smooth: 0.2s;
+  --transition-bounce: 0.25s;
+  --transition-slow: 0.3s;
+
+  --overlay-bg: rgba(0, 0, 0, 0.3);
+  --modal-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  --input-focus-shadow: 0 0 0 3px rgba(8, 79, 84, 0.15);
+  --custom-overlay-bg: rgba(0, 0, 0, 0.35);
+  --custom-modal-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  --white-alpha-05: rgba(0, 0, 0, 0.03);
+  --black-alpha-20: rgba(0, 0, 0, 0.15);
+
+  --auth-card-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+  --auth-placeholder-color: #888888;
+
+  --ai-smartfill-bg: #e6f2f3;
+  --ai-smartfill-border: #a6cdd1;
+  --cooldown-color: #92400e;
+  --cooldown-border: #f59e0b;
+  --cooldown-bg: #fef3c7;
+
+  --grid-gap: 24px;
+
+  --profile-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  --username-focus-shadow: 0 0 0 2px rgba(8, 79, 84, 0.3);
+  --stat-icon-bg: #e6f2f3;
+  --stat-icon-border: #a6cdd1;
+  --stat-tag-color: #5b21b6;
+  --activity-sync-bg: rgba(8, 79, 84, 0.08);
+  --logout-bg-hover: #fde8e8;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+} */

@@ -8,13 +8,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(8, 13, 24, 0.75);
+  background: var(--overlay-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 9999;
   padding: 20px;
   overflow-y: auto;
-  animation: overlayFadeIn 0.25s ease-out;
+  animation: overlayFadeIn var(--transition-bounce) ease-out;
 }
 
 @keyframes overlayFadeIn {
@@ -36,12 +36,12 @@
   border: 1px solid var(--border-card);
   border-radius: 14px;
   padding: 28px 32px;
-  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--modal-shadow);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   color: var(--text-main);
   font-family: "Inter", system-ui, sans-serif;
-  animation: modalIn 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  animation: modalIn var(--transition-slow) cubic-bezier(0.2, 0.9, 0.3, 1.2);
   margin: auto;
 }
 
@@ -79,7 +79,7 @@
 }
 
 .modal-close {
-  background: transparent;
+  background: var(--color-transparent);
   border: none;
   color: var(--text-muted);
   cursor: pointer;
@@ -89,11 +89,11 @@
   align-items: center;
   justify-content: center;
   border-radius: 6px;
-  transition: all 0.2s;
+  transition: all var(--transition-smooth);
 }
 
 .modal-close:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--white-alpha-05);
   color: var(--text-main);
 }
 
@@ -117,16 +117,16 @@
 }
 
 .btn-ai-smartfill {
-  background: rgba(78, 101, 243, 0.1);
+  background: var(--ai-smartfill-bg);
   color: var(--btn-primary);
-  border: 1px solid rgba(78, 101, 243, 0.3);
+  border: 1px solid var(--ai-smartfill-border);
   padding: 6px 14px;
   border-radius: 6px;
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
   letter-spacing: 0.3px;
-  transition: all 0.2s ease;
+  transition: all var(--transition-smooth) ease;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -134,7 +134,7 @@
 
 .btn-ai-smartfill:hover:not(:disabled) {
   background: var(--btn-primary);
-  color: #ffffff;
+  color: var(--color-white);
   border-color: var(--btn-primary);
   transform: translateY(-1px);
 }
@@ -142,15 +142,15 @@
 .btn-ai-smartfill:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--white-alpha-05);
   border-color: var(--border-card);
   color: var(--text-muted);
 }
 
 .btn-ai-smartfill.cooldown-active {
-  color: #ffb703;
-  border-color: rgba(255, 183, 3, 0.4);
-  background: rgba(255, 183, 3, 0.05);
+  color: var(--cooldown-color);
+  border-color: var(--cooldown-border);
+  background: var(--cooldown-bg);
   cursor: not-allowed;
 }
 
@@ -180,7 +180,7 @@
   font-size: 0.95rem;
   font-family: inherit;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all var(--transition-smooth) ease;
   box-sizing: border-box;
 }
 
@@ -194,7 +194,7 @@
 .form-select:focus,
 .form-textarea:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(78, 101, 243, 0.12);
+  box-shadow: var(--input-focus-shadow);
 }
 
 .form-textarea {
@@ -258,10 +258,10 @@
   cursor: pointer;
   font-family: inherit;
   letter-spacing: 0.5px;
-  transition: all 0.2s ease;
+  transition: all var(--transition-smooth) ease;
   min-width: 140px;
   background: var(--btn-primary);
-  color: #ffffff;
+  color: var(--color-white);
   border: none;
   display: flex;
   align-items: center;
@@ -287,15 +287,15 @@
   cursor: pointer;
   font-family: inherit;
   letter-spacing: 0.5px;
-  transition: all 0.2s ease;
+  transition: all var(--transition-smooth) ease;
   min-width: 140px;
-  background: transparent;
+  background: var(--color-transparent);
   color: var(--text-muted);
   border: 1px solid var(--border-card);
 }
 
 .btn-cancel:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--white-alpha-05);
   border-color: var(--text-muted);
   color: var(--text-main);
 }
@@ -307,7 +307,7 @@
 
 .modal-content::-webkit-scrollbar-track,
 .form-textarea::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--black-alpha-20);
   border-radius: 4px;
 }
 
