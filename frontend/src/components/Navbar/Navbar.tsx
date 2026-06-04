@@ -1,3 +1,4 @@
+import { ChevronDown, Plus, Search, User } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
@@ -52,13 +53,16 @@ const Navbar = ({
 
       <div className="nav-collapse">
         {showSearchBar ? (
-          <input
-            type="text"
-            className="search-bar"
-            placeholder="Search Your Vault..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery?.(e.target.value)}
-          />
+          <div className="search-wrapper">
+            <Search size={18} className="search-icon-inside" />
+            <input
+              type="text"
+              className="search-bar"
+              placeholder="Search Your Vault..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery?.(e.target.value)}
+            />
+          </div>
         ) : (
           <div className="search-placeholder" />
         )}
@@ -71,8 +75,11 @@ const Navbar = ({
               closeMenu();
             }}
           >
-            <img src="" alt="" className="user-avatar" />
-            <span className="profile-text">Profile ▾</span>
+            <div className="avatar-wrapper">
+              <User size={16} className="default-avatar-icon" />
+            </div>
+            <span className="profile-text">Profile</span>
+            <ChevronDown size={14} className="chevron-icon" />
           </div>
 
           <button
@@ -82,7 +89,8 @@ const Navbar = ({
               closeMenu();
             }}
           >
-            + New Snippet
+            <Plus size={16} />
+            <span>New Snippet</span>
           </button>
         </div>
       </div>

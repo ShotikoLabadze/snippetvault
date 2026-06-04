@@ -1,12 +1,17 @@
 import {
+  Check,
   Code2,
   Eye,
   FilePlus,
+  KeyRound,
+  Loader2,
   LogOut,
   Plus,
   RefreshCw,
   Settings,
   Tag,
+  User,
+  X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -185,7 +190,11 @@ const ProfilePage = () => {
   };
 
   if (loading) {
-    return <div className="profile-loading">Accessing Your Vault...</div>;
+    return (
+      <div className="profile-loading">
+        <Loader2 size={24} className="spin" /> Accessing Your Vault...
+      </div>
+    );
   }
 
   return (
@@ -193,11 +202,10 @@ const ProfilePage = () => {
       <main className="profile-layout">
         <section className="profile-hero-card glass-panel">
           <div className="profile-hero-left">
-            <img
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
-              alt={profile?.username}
-              className="profile-avatar"
-            />
+            <div className="profile-avatar-placeholder">
+              <User size={48} className="profile-icon-svg" />
+            </div>
+
             <div className="hero-text-details">
               {isEditing ? (
                 <input
@@ -226,7 +234,15 @@ const ProfilePage = () => {
                   onClick={handleSaveProfile}
                   disabled={saveLoading}
                 >
-                  {saveLoading ? "Saving..." : "Save Changes"}
+                  {saveLoading ? (
+                    <>
+                      <Loader2 size={14} className="spin" /> Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Check size={14} /> Save Changes
+                    </>
+                  )}
                 </button>
                 <button
                   className="profile-btn profile-btn-cancel"
@@ -236,7 +252,7 @@ const ProfilePage = () => {
                   }}
                   disabled={saveLoading}
                 >
-                  Cancel
+                  <X size={14} /> Cancel
                 </button>
               </>
             ) : (
@@ -245,21 +261,20 @@ const ProfilePage = () => {
                   className="profile-btn btn-profile-edit"
                   onClick={() => setIsEditing(true)}
                 >
-                  Edit Profile
+                  <User size={14} /> Edit Profile
                 </button>
                 <button
                   className="profile-btn btn-profile-password"
                   onClick={() => setIsChangingPassword(!isChangingPassword)}
                 >
-                  {isChangingPassword
-                    ? "Close Password Form"
-                    : "Change Password"}
+                  <KeyRound size={14} />
+                  {isChangingPassword ? "Close Form" : "Change Password"}
                 </button>
                 <button
                   className="profile-btn btn-profile-logout"
                   onClick={handleLogout}
                 >
-                  Logout <LogOut size={14} className="btn-icon" />
+                  <LogOut size={14} /> Logout
                 </button>
               </>
             )}
@@ -267,7 +282,7 @@ const ProfilePage = () => {
         </section>
 
         {isChangingPassword && (
-          <section className="password-change-card">
+          <section className="password-change-card animate-slide-down">
             <h3 className="password-card-title">Security Upgrade</h3>
             <form
               className="password-change-form"
@@ -318,7 +333,13 @@ const ProfilePage = () => {
                   className="profile-btn btn-profile-save"
                   disabled={passwordLoading}
                 >
-                  {passwordLoading ? "Updating..." : "Update Password"}
+                  {passwordLoading ? (
+                    <>
+                      <Loader2 size={14} className="spin" /> Updating...
+                    </>
+                  ) : (
+                    "Update Password"
+                  )}
                 </button>
                 <button
                   type="button"
@@ -381,13 +402,13 @@ const ProfilePage = () => {
                 className="btn-new-snippet new-snippet-profile-btn"
                 onClick={() => setIsModalOpen(true)}
               >
-                <Plus size={14} className="btn-icon" /> New Snippet
+                <Plus size={14} /> New Snippet
               </button>
             </div>
             {mySnippets.length === 0 ? (
-              <p className="empty-vault">
+              <div className="empty-vault">
                 Your vault is empty. Create your first snippet!
-              </p>
+              </div>
             ) : (
               <div className="profile-snippets-grid">
                 {mySnippets.map((snippet) => (
@@ -401,9 +422,9 @@ const ProfilePage = () => {
             <h2 className="section-title">Recent Activity</h2>
             <div className="activity-timeline">
               {getRecentActivity().length === 0 ? (
-                <p className="empty-vault" style={{ padding: 0 }}>
+                <div className="empty-vault" style={{ padding: 20 }}>
                   No recent activity
-                </p>
+                </div>
               ) : (
                 getRecentActivity().map((snippet) => {
                   const isUpdated =
@@ -411,7 +432,9 @@ const ProfilePage = () => {
                     snippet.updatedAt !== snippet.createdAt;
                   return (
                     <div key={snippet.id} className="activity-item">
-                      <span className="activity-icon">
+                      <span
+                        className={`activity-icon ${isUpdated ? "activity-icon-sync" : "activity-icon-create"}`}
+                      >
                         {isUpdated ? (
                           <RefreshCw size={14} />
                         ) : (

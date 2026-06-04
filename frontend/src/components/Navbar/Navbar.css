@@ -10,6 +10,7 @@
   z-index: 10;
   width: 100%;
   flex-wrap: wrap;
+  box-sizing: border-box;
 }
 
 .logo {
@@ -47,10 +48,24 @@
   min-width: 0;
 }
 
-.search-bar {
+.search-wrapper {
+  position: relative;
   flex: 1;
   max-width: 550px;
-  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon-inside {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
   background: var(--bg-input);
   border: 1px solid var(--border-card);
   border-radius: 10px;
@@ -58,6 +73,7 @@
   font-size: 15px;
   outline: none;
   transition: border-color var(--transition-normal);
+  box-sizing: border-box;
 }
 
 .search-bar:focus {
@@ -80,7 +96,7 @@
 .profile-trigger {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   cursor: pointer;
   padding: 6px 12px;
   border-radius: 8px;
@@ -91,12 +107,26 @@
   background: var(--bg-input);
 }
 
-.user-avatar {
-  width: 32px;
-  height: 32px;
+.avatar-wrapper {
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background: var(--badge-bg);
-  object-fit: cover;
+  background: var(--bg-input);
+  border: 1px solid var(--border-card);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.default-avatar-icon {
+  color: var(--text-muted);
+  width: 26px;
+  height: 26px;
+}
+
+.chevron-icon {
+  color: var(--text-muted);
+  transition: transform var(--transition-fast);
 }
 
 .profile-text {
@@ -107,13 +137,16 @@
 
 .btn-new-snippet {
   background: var(--btn-primary);
-  color: var(--color-white);
+  color: #ffffff;
   border: none;
-  padding: 8px 18px;
+  padding: 10px 18px;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   transition:
     background var(--transition-smooth),
     transform var(--transition-fast);
@@ -129,7 +162,7 @@
   justify-content: space-between;
   width: 28px;
   height: 22px;
-  background: var(--color-transparent);
+  background: transparent;
   border: none;
   cursor: pointer;
   padding: 0;
@@ -161,7 +194,8 @@
     padding: 16px 24px;
     gap: 16px;
   }
-  .profile-text {
+  .profile-text,
+  .chevron-icon {
     display: none;
   }
   .auth-brand-name {
@@ -203,7 +237,7 @@
     margin-top: 12px;
   }
 
-  .search-bar {
+  .search-wrapper {
     max-width: none;
     width: 100%;
   }
@@ -217,11 +251,13 @@
   .profile-trigger {
     justify-content: flex-start;
   }
-  .profile-text {
+  .profile-text,
+  .chevron-icon {
     display: inline;
   }
   .btn-new-snippet {
     width: 100%;
+    justify-content: center;
   }
 }
 
