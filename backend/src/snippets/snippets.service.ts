@@ -13,6 +13,7 @@ export class SnippetsService {
     return this.prisma.snippet.create({
       data: {
         title: dto.title,
+        description: dto.description,
         code: dto.code,
         language: dto.language,
         tags: dto.tags || [],
@@ -88,9 +89,9 @@ export class SnippetsService {
       where: { id },
       data: {
         title: updateSnippetDto.title ?? undefined,
+        description: updateSnippetDto.description ?? undefined,
         code: updateSnippetDto.code ?? undefined,
         language: updateSnippetDto.language ?? undefined,
-
         imageUrl: updateSnippetDto.imageUrl ?? undefined,
         tags: updateSnippetDto.tags ? updateSnippetDto.tags || [] : undefined,
       },

@@ -272,8 +272,7 @@ const SnippetPage = () => {
               </div>
 
               <p className="snippet-description">
-                {snippet.description ||
-                  "No description provided for this snippet. You can add one by editing."}
+                {snippet.description?.trim() || "No description provided."}
               </p>
 
               <div className="code-box">
