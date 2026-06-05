@@ -18,15 +18,27 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const isAuthenticated = !!localStorage.getItem("token");
+
   const handleSnippetCreated = () => {
     setIsModalOpen(false);
-
     window.location.reload();
   };
 
   return (
     <Router>
       <Routes>
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/dashboard" />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
@@ -47,7 +59,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
 
       <CreateSnippetModal
